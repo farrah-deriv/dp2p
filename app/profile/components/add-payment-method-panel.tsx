@@ -195,7 +195,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
           type="submit"
           onClick={handleSubmit}
           disabled={isLoading || !selectedMethod}
-          className="bg-primary hover:bg-primary/90 text-white rounded-md"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md"
         >
           {isLoading ? "Adding..." : "Add"}
         </Button>

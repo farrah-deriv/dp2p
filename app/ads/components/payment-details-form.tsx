@@ -149,7 +149,7 @@ export default function PaymentDetailsForm({
                     </button>
                   ))}
                   {touched && paymentMethods.length === 0 && (
-                    <p className="text-red-500 text-xs mt-1">At least one payment method is required</p>
+                    <p className="text-destructive text-xs mt-1">At least one payment method is required</p>
                   )}
                 </div>
               </div>

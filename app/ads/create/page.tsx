@@ -407,22 +407,22 @@ export default function CreateAdPage() {
             onClick={handleButtonClick}
             disabled={isSubmitting || (currentStep === 0 && !adFormValid) || (currentStep === 1 && !paymentFormValid)}
             className={`px-8 py-2.5 rounded-full text-sm font-medium transition-colors w-36 h-10 flex items-center justify-center
-  ${
-    currentStep === 0
-      ? adFormValid
-        ? "bg-primary text-white hover:bg-primary/90"
+${
+  currentStep === 0
+    ? adFormValid
+      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+      : "bg-gray-100 text-gray-500 cursor-not-allowed"
+    : isSubmitting
+      ? "bg-primary/70 text-primary-foreground cursor-not-allowed"
+      : paymentFormValid
+        ? "bg-primary text-primary-foreground hover:bg-primary/90"
         : "bg-gray-100 text-gray-500 cursor-not-allowed"
-      : isSubmitting
-        ? "bg-primary/70 text-white cursor-not-allowed"
-        : paymentFormValid
-          ? "bg-primary text-white hover:bg-primary/90"
-          : "bg-gray-100 text-gray-500 cursor-not-allowed"
-  }`}
+}`}
           >
             {isSubmitting ? (
               <div className="flex items-center gap-2">
                 <span>{isEditMode ? "Saving..." : "Creating..."}</span>
-                <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
               </div>
             ) : currentStep === 0 ? (
               "Next"

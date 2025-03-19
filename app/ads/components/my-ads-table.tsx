@@ -40,10 +40,11 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     return `${limits.currency} ${limits.min.toFixed(2)} - ${limits.max.toFixed(2)}`
   }
 
+  // Update the status badge colors
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span>
+        return <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs">Active</span>
       case "Inactive":
         return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
       default:
@@ -219,7 +220,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
         </p>
         <Button
           onClick={() => router.push("/ads/create")}
-          className="bg-red-500 hover:bg-red-600 text-white rounded-full px-8"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
         >
           Create ad
         </Button>
@@ -262,7 +263,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                 <tr key={index} className={`border-b ${ad.status === "Inactive" ? "grayscale opacity-50" : ""}`}>
                   <td className="py-4 w-[18%]">
                     <div>
-                      <span className={`font-medium ${ad.type === "Buy" ? "text-green-600" : "text-amber-600"}`}>
+                      <span className={`font-medium ${ad.type === "Buy" ? "text-primary" : "text-secondary"}`}>
                         {ad.type}
                       </span>
                       <span className="text-[#101213] font-medium"> {ad.id}</span>

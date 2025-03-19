@@ -201,9 +201,9 @@ export default function AdDetailsForm({ onNext, onClose, initialData, isEditMode
                     />
                     <div
                       className={`h-5 w-5 rounded-full border-2 transition-colors flex items-center justify-center
-${type === "buy" ? "border-blue-500 border-[3px]" : "border-gray-300"}`}
+${type === "buy" ? "border-primary border-[3px]" : "border-gray-300"}`}
                     >
-                      {type === "buy" && <div className="h-2 w-2 rounded-full bg-blue-500"></div>}
+                      {type === "buy" && <div className="h-2 w-2 rounded-full bg-primary"></div>}
                     </div>
                   </div>
                   <span className="text-lg">Buy USD</span>
@@ -220,9 +220,9 @@ ${type === "buy" ? "border-blue-500 border-[3px]" : "border-gray-300"}`}
                     />
                     <div
                       className={`h-5 w-5 rounded-full border-2 transition-colors flex items-center justify-center
-${type === "sell" ? "border-blue-500 border-[3px]" : "border-gray-300"}`}
+${type === "sell" ? "border-primary border-[3px]" : "border-gray-300"}`}
                     >
-                      {type === "sell" && <div className="h-2 w-2 rounded-full bg-blue-500"></div>}
+                      {type === "sell" && <div className="h-2 w-2 rounded-full bg-primary"></div>}
                     </div>
                   </div>
                   <span className="text-lg">Sell USD</span>
@@ -247,14 +247,14 @@ ${type === "sell" ? "border-blue-500 border-[3px]" : "border-gray-300"}`}
                       step="0.01"
                       className={`text-left pl-3 pr-16 h-10 transition-all duration-200 ${
                         touched.totalAmount && formErrors.totalAmount
-                          ? "border-orange-500 focus:border-orange-500 border-2"
+                          ? "border-destructive focus:border-destructive border-2"
                           : "border-gray-200 focus:border-black hover:border-gray-300"
                       }`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">USD</span>
                   </div>
                   {touched.totalAmount && formErrors.totalAmount && (
-                    <p className="text-orange-500 text-xs mt-1">{formErrors.totalAmount}</p>
+                    <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
                   )}
                 </div>
                 <div>
@@ -271,14 +271,14 @@ ${type === "sell" ? "border-blue-500 border-[3px]" : "border-gray-300"}`}
                       step="0.01"
                       className={`text-left pl-3 pr-16 h-10 transition-all duration-200 ${
                         touched.fixedRate && formErrors.fixedRate
-                          ? "border-orange-500 focus:border-orange-500 border-2"
+                          ? "border-destructive focus:border-destructive border-2"
                           : "border-gray-200 focus:border-black hover:border-gray-300"
                       }`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">IDR</span>
                   </div>
                   {touched.fixedRate && formErrors.fixedRate && (
-                    <p className="text-orange-500 text-xs mt-1">{formErrors.fixedRate}</p>
+                    <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
                   )}
                 </div>
               </div>
@@ -301,14 +301,14 @@ ${type === "sell" ? "border-blue-500 border-[3px]" : "border-gray-300"}`}
                       step="0.01"
                       className={`text-left pl-3 pr-16 h-10 transition-all duration-200 ${
                         touched.minAmount && formErrors.minAmount
-                          ? "border-orange-500 focus:border-orange-500 border-2"
+                          ? "border-destructive focus:border-destructive border-2"
                           : "border-gray-200 focus:border-black hover:border-gray-300"
                       }`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">USD</span>
                   </div>
                   {touched.minAmount && formErrors.minAmount && (
-                    <p className="text-orange-500 text-xs mt-1">{formErrors.minAmount}</p>
+                    <p className="text-destructive text-xs mt-1">{formErrors.minAmount}</p>
                   )}
                 </div>
                 <div>
@@ -325,14 +325,14 @@ ${type === "sell" ? "border-blue-500 border-[3px]" : "border-gray-300"}`}
                       step="0.01"
                       className={`text-left pl-3 pr-16 h-10 transition-all duration-200 ${
                         touched.maxAmount && formErrors.maxAmount
-                          ? "border-orange-500 focus:border-orange-500 border-2"
+                          ? "border-destructive focus:border-destructive border-2"
                           : "border-gray-200 focus:border-black hover:border-gray-300"
                       }`}
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">USD</span>
                   </div>
                   {touched.maxAmount && formErrors.maxAmount && (
-                    <p className="text-orange-500 text-xs mt-1">{formErrors.maxAmount}</p>
+                    <p className="text-destructive text-xs mt-1">{formErrors.maxAmount}</p>
                   )}
                 </div>
               </div>

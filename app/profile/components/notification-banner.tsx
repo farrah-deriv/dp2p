@@ -21,10 +21,13 @@ export default function NotificationBanner({ message, onClose, duration = 5000 }
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 mx-auto p-4 flex justify-center">
-      <div className="bg-green-600 text-white px-4 py-3 rounded-md shadow-md flex items-center max-w-md w-full">
+      <div className="bg-primary text-primary-foreground px-4 py-3 rounded-md shadow-md flex items-center max-w-md w-full">
         <Check className="h-5 w-5 mr-2 flex-shrink-0" />
         <span className="flex-grow">{message}</span>
-        <button onClick={onClose} className="ml-2 text-white hover:text-gray-200 flex-shrink-0">
+        <button
+          onClick={onClose}
+          className="ml-2 text-primary-foreground hover:text-primary-foreground/80 flex-shrink-0"
+        >
           <X className="h-5 w-5" />
         </button>
       </div>

@@ -150,7 +150,7 @@ export default function AdsPage() {
         <MyAdsHeader hasAds={ads.length > 0} />
         <Button
           onClick={() => router.push("/ads/create")}
-          className="bg-primary hover:bg-primary/90 text-white rounded-full px-6"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6"
         >
           Create Ad
         </Button>

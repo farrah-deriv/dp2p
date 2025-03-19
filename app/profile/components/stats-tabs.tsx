@@ -121,7 +121,7 @@ export default function StatsTabs({ children, stats }: StatsTabsProps) {
 
         {activeTab === "payment" && (
           <Button
-            className="bg-primary hover:bg-primary/90 text-white rounded-full px-4"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4"
             onClick={() => setShowAddPaymentMethodPanel(true)}
           >
             Add payment method

@@ -404,7 +404,10 @@ export default function PaymentMethodsTab() {
     return (
       <div className="flex flex-col items-center justify-center py-8">
         <p className="text-red-500 mb-4">{error}</p>
-        <button onClick={fetchPaymentMethods} className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded">
+        <button
+          onClick={fetchPaymentMethods}
+          className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded"
+        >
           Try again
         </button>
       </div>
@@ -527,7 +530,7 @@ export default function PaymentMethodsTab() {
               <button
                 onClick={confirmDeletePaymentMethod}
                 disabled={isDeleting}
-                className="w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium"
+                className="w-full py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium"
               >
                 {isDeleting ? "Deleting..." : "Delete"}
               </button>

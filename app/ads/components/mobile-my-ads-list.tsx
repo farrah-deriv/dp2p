@@ -35,7 +35,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span>
+        return <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs">Active</span>
       case "Inactive":
         return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
       default:
@@ -211,7 +211,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
         </p>
         <Button
           onClick={() => router.push("/ads/create")}
-          className="bg-red-500 hover:bg-red-600 text-white rounded-full px-8"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
         >
           Create ad
         </Button>
@@ -227,7 +227,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
             <div className="flex justify-between items-start mb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className={`font-medium ${ad.type === "Buy" ? "text-green-600" : "text-amber-600"}`}>
+                  <span className={`font-medium ${ad.type === "Buy" ? "text-primary" : "text-secondary"}`}>
                     {ad.type}
                   </span>
                   <span className="text-gray-800 font-medium">{ad.id}</span>
