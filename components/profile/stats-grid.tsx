@@ -1,4 +1,5 @@
 import { Info } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
 
 interface StatCardProps {
   title: string
@@ -9,14 +10,16 @@ interface StatCardProps {
 
 function StatCard({ title, value, subtitle, hasInfo = false }: StatCardProps) {
   return (
-    <div className="border rounded-lg p-4">
-      <div className="flex items-center text-sm text-gray-500 mb-1">
-        {title}
-        {hasInfo && <Info className="h-4 w-4 ml-1 text-gray-400" />}
-      </div>
-      <div className="text-xl font-bold">{value}</div>
-      {subtitle && <div className="text-sm text-gray-500">{subtitle}</div>}
-    </div>
+    <Card>
+      <CardContent className="p-4">
+        <div className="flex items-center text-sm text-gray-500 mb-1">
+          {title}
+          {hasInfo && <Info className="h-4 w-4 ml-1 text-gray-400" />}
+        </div>
+        <div className="text-xl font-bold">{value}</div>
+        {subtitle && <div className="text-sm text-gray-500">{subtitle}</div>}
+      </CardContent>
+    </Card>
   )
 }
 
@@ -29,7 +32,7 @@ interface StatsGridProps {
     tradePartners: number
     totalOrders30d: number
     totalOrdersLifetime: number
-    tradeVolume30d: { amount: string; currency: string }
+    tradeVolume30d: { amount: string; currency: string; period: string }
     tradeVolumeLifetime: { amount: string; currency: string }
   }
 }

@@ -7,6 +7,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button"
 // Update imports to remove activateAd
 import { deleteAd, updateAd } from "@/services/api/api-my-ads"
+import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge"
 
 interface Ad {
   id: string
@@ -52,11 +54,23 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span>
+        return (
+          <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100">
+            Active
+          </Badge>
+        )
       case "Inactive":
-        return <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Inactive</span>
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-800 hover:bg-red-100">
+            Inactive
+          </Badge>
+        )
       default:
-        return <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Inactive</span>
+        return (
+          <Badge variant="outline" className="bg-red-100 text-red-800 hover:bg-red-100">
+            Inactive
+          </Badge>
+        )
     }
   }
 
@@ -221,14 +235,10 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                   <div className="mb-1">
                     USD {(ad.available.current || 0).toFixed(2)} / {(ad.available.total || 0).toFixed(2)}
                   </div>
-                  <div className="h-2 bg-gray-200 rounded-full w-32 overflow-hidden">
-                    <div
-                      className="h-full bg-black rounded-full"
-                      style={{
-                        width: `${ad.available.total ? ((ad.available.current || 0) / ad.available.total) * 100 : 0}%`,
-                      }}
-                    ></div>
-                  </div>
+                  <Progress
+                    value={ad.available.total ? ((ad.available.current || 0) / ad.available.total) * 100 : 0}
+                    className="h-2 w-32"
+                  />
                 </td>
                 <td className="py-4 w-[18%] truncate">{ad.paymentMethods.join(", ")}</td>
                 <td className="py-4 w-[100px] whitespace-nowrap">{getStatusBadge(ad.status)}</td>

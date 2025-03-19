@@ -13,6 +13,7 @@ import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 export default function AdsPage() {
   const [ads, setAds] = useState<MyAd[]>([])
@@ -122,14 +123,14 @@ export default function AdsPage() {
         <Navigation />
       </div>
 
-      {/* Fixed success banners - Updated with container class and rounded corners */}
+      {/* Fixed success banners */}
       {showDeletedBanner && (
         <div className="fixed top-4 left-0 right-0 z-50 flex justify-center">
           <div className="container mx-auto px-4">
-            <div className="bg-green-600 text-white py-3 px-4 rounded-lg flex items-center justify-center max-w-[600px] mx-auto">
+            <Alert className="bg-primary text-primary-foreground py-3 px-4 rounded-lg max-w-[600px] mx-auto">
               <Check className="h-5 w-5 mr-2" />
-              <span>Ad deleted</span>
-            </div>
+              <AlertDescription>Ad deleted</AlertDescription>
+            </Alert>
           </div>
         </div>
       )}
@@ -137,10 +138,10 @@ export default function AdsPage() {
       {showUpdatedBanner && (
         <div className="fixed top-4 left-0 right-0 z-50 flex justify-center">
           <div className="container mx-auto px-4">
-            <div className="bg-green-600 text-white py-3 px-4 rounded-lg flex items-center justify-center max-w-[600px] mx-auto">
+            <Alert className="bg-primary text-primary-foreground py-3 px-4 rounded-lg max-w-[600px] mx-auto">
               <Check className="h-5 w-5 mr-2" />
-              <span>Ad updated successfully</span>
-            </div>
+              <AlertDescription>Ad updated successfully</AlertDescription>
+            </Alert>
           </div>
         </div>
       )}
@@ -148,10 +149,7 @@ export default function AdsPage() {
       {/* Fixed controls section */}
       <div className="flex-none container mx-auto px-4">
         <MyAdsHeader hasAds={ads.length > 0} />
-        <Button
-          onClick={() => router.push("/ads/create")}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6"
-        >
+        <Button onClick={() => router.push("/ads/create")} className="rounded-full px-6">
           Create Ad
         </Button>
       </div>
@@ -160,11 +158,11 @@ export default function AdsPage() {
       <div className="flex-1 overflow-hidden container mx-auto px-4">
         {loading ? (
           <div className="text-center py-8">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-red-500 border-r-transparent"></div>
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary border-r-transparent"></div>
             <p className="mt-2 text-gray-600">Loading your ads...</p>
           </div>
         ) : error ? (
-          <div className="text-center py-8 text-red-500">{error}</div>
+          <div className="text-center py-8 text-destructive">{error}</div>
         ) : isMobile ? (
           <MobileMyAdsList
             ads={ads.map((ad) => ({

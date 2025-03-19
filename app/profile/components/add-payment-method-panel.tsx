@@ -1,13 +1,15 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useEffect } from "react"
-import { X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 interface AddPaymentMethodPanelProps {
   onClose: () => void
@@ -30,177 +32,187 @@ const PAYMENT_METHODS = [
   {
     value: "alipay",
     label: "Alipay",
-    fields: [{ name: "alipay_id", label: "Alipay ID", type: "text" }],
+    fields: [{ name: "alipay_id", label: "Alipay ID", type: "text", required: true }],
   },
 ]
 
+// Create a form schema
+const formSchema = z.object({
+  method: z.string().min(1, "Please select a payment method"),
+  instructions: z.string().optional(),
+  // Dynamic fields will be added based on selected method
+})
+
 export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: AddPaymentMethodPanelProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>("")
-  const [details, setDetails] = useState<Record<string, string>>({})
-  const [instructions, setInstructions] = useState("")
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [charCount, setCharCount] = useState(0)
+  const [dynamicSchema, setDynamicSchema] = useState(formSchema)
 
-  // Reset details when payment method changes
+  // Initialize form
+  const form = useForm<z.infer<typeof dynamicSchema>>({
+    resolver: zodResolver(dynamicSchema),
+    defaultValues: {
+      method: "",
+      instructions: "",
+    },
+  })
+
+  // Update schema when payment method changes
   useEffect(() => {
-    setDetails({})
-    setErrors({})
-    setTouched({})
-  }, [selectedMethod])
+    if (selectedMethod) {
+      const method = PAYMENT_METHODS.find((m) => m.value === selectedMethod)
+      if (method) {
+        // Create a new schema with dynamic fields
+        const schemaFields: Record<string, any> = {
+          method: z.string().min(1, "Please select a payment method"),
+          instructions: z.string().optional(),
+        }
+
+        // Add fields based on selected method
+        method.fields.forEach((field) => {
+          if (field.required) {
+            schemaFields[field.name] = z.string().min(1, `${field.label} is required`)
+          } else {
+            schemaFields[field.name] = z.string().optional()
+          }
+        })
+
+        setDynamicSchema(z.object(schemaFields))
+
+        // Reset form with new fields
+        form.reset({
+          method: selectedMethod,
+          instructions: form.getValues().instructions,
+          ...method.fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {}),
+        })
+      }
+    }
+  }, [selectedMethod, form])
 
   // Update character count for instructions
   useEffect(() => {
+    const instructions = form.watch("instructions") || ""
     setCharCount(instructions.length)
-  }, [instructions])
+  }, [form.watch("instructions")])
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {}
-    const method = PAYMENT_METHODS.find((m) => m.value === selectedMethod)
-
-    if (!selectedMethod) {
-      newErrors.method = "Please select a payment method"
-    }
-
-    if (method) {
-      method.fields.forEach((field) => {
-        if (!details[field.name]?.trim() && field.required) {
-          newErrors[field.name] = `${field.label} is required`
-        }
-      })
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+  // Handle method selection
+  const handleMethodChange = (value: string) => {
+    setSelectedMethod(value)
+    form.setValue("method", value)
   }
 
-  const handleInputChange = (name: string, value: string) => {
-    setDetails((prev) => ({ ...prev, [name]: value }))
-    setTouched((prev) => ({ ...prev, [name]: true }))
+  // Handle form submission
+  function onSubmit(values: z.infer<typeof dynamicSchema>) {
+    const { method, instructions, ...fields } = values
+    const fieldValues = { ...fields }
 
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
-    }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    // Mark all fields as touched
-    const method = PAYMENT_METHODS.find((m) => m.value === selectedMethod)
-    if (method) {
-      const allTouched: Record<string, boolean> = {}
-      method.fields.forEach((field) => {
-        allTouched[field.name] = true
-      })
-      setTouched(allTouched)
+    // Add instructions if present
+    if (instructions?.trim()) {
+      fieldValues.instructions = instructions.trim()
     }
 
-    if (validateForm()) {
-      // Create a fields object with all the form field values
-      const fieldValues = { ...details }
-
-      // Add instructions if present
-      if (instructions.trim()) {
-        fieldValues.instructions = instructions.trim()
-      }
-
-      // Pass the method value and field values to the parent component
-      onAdd(selectedMethod, fieldValues)
-    }
+    onAdd(method, fieldValues)
   }
 
   const selectedMethodConfig = PAYMENT_METHODS.find((m) => m.value === selectedMethod)
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl flex flex-col">
-      <div className="p-6 border-b relative">
-        <h2 className="text-xl font-semibold">Add payment method</h2>
-        <button
-          onClick={onClose}
-          className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-        >
-          <X className="h-5 w-5" />
-        </button>
-      </div>
+    <Sheet open={true} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent className="sm:max-w-md">
+        <SheetHeader>
+          <SheetTitle>Add payment method</SheetTitle>
+        </SheetHeader>
 
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-500 mb-2">Choose your payment method</label>
-            <Select value={selectedMethod} onValueChange={(value) => setSelectedMethod(value)}>
-              <SelectTrigger className={errors.method ? "border-red-500" : ""}>
-                <SelectValue placeholder="Select payment method" />
-              </SelectTrigger>
-              <SelectContent>
-                {PAYMENT_METHODS.map((method) => (
-                  <SelectItem key={method.value} value={method.value}>
-                    {method.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.method && <p className="mt-1 text-xs text-red-500">{errors.method}</p>}
-          </div>
-
-          {selectedMethodConfig && (
-            <div className="space-y-4">
-              {selectedMethodConfig.fields.map((field) => (
-                <div key={field.name}>
-                  <label htmlFor={field.name} className="block text-sm font-medium text-gray-500 mb-2">
-                    {field.label}
-                  </label>
-                  <Input
-                    id={field.name}
-                    type={field.type}
-                    value={details[field.name] || ""}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    placeholder={`Enter ${field.label.toLowerCase()}`}
-                    className={touched[field.name] && errors[field.name] ? "border-red-500" : ""}
-                  />
-                  {touched[field.name] && errors[field.name] && (
-                    <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {selectedMethod && (
-            <div>
-              <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
-                Instructions
-              </label>
-              <Textarea
-                id="instructions"
-                value={instructions}
-                onChange={(e) => setInstructions(e.target.value)}
-                placeholder="Enter your instructions"
-                className="min-h-[120px] resize-none"
-                maxLength={300}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto py-6 space-y-6">
+              <FormField
+                control={form.control}
+                name="method"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-500">Choose your payment method</FormLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => {
+                        handleMethodChange(value)
+                        field.onChange(value)
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select payment method" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {PAYMENT_METHODS.map((method) => (
+                          <SelectItem key={method.value} value={method.value}>
+                            {method.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
-            </div>
-          )}
-        </div>
-      </form>
 
-      <div className="p-6 border-t">
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={isLoading || !selectedMethod}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md"
-        >
-          {isLoading ? "Adding..." : "Add"}
-        </Button>
-      </div>
-    </div>
+              {selectedMethodConfig && (
+                <div className="space-y-4">
+                  {selectedMethodConfig.fields.map((field) => (
+                    <FormField
+                      key={field.name}
+                      control={form.control}
+                      name={field.name as any}
+                      render={({ field: formField }) => (
+                        <FormItem>
+                          <FormLabel className="text-sm font-medium text-gray-500">{field.label}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type={field.type}
+                              placeholder={`Enter ${field.label.toLowerCase()}`}
+                              {...formField}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {selectedMethod && (
+                <FormField
+                  control={form.control}
+                  name="instructions"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-500">Instructions</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Enter your instructions"
+                          className="min-h-[120px] resize-none"
+                          maxLength={300}
+                          {...field}
+                        />
+                      </FormControl>
+                      <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+                    </FormItem>
+                  )}
+                />
+              )}
+            </div>
+
+            <SheetFooter className="pt-4 border-t">
+              <Button type="submit" disabled={isLoading || !selectedMethod}>
+                {isLoading ? "Adding..." : "Add"}
+              </Button>
+            </SheetFooter>
+          </form>
+        </Form>
+      </SheetContent>
+    </Sheet>
   )
 }
 

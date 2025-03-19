@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { Check, X } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 interface NotificationBannerProps {
   message: string
@@ -21,16 +22,13 @@ export default function NotificationBanner({ message, onClose, duration = 5000 }
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 mx-auto p-4 flex justify-center">
-      <div className="bg-primary text-primary-foreground px-4 py-3 rounded-md shadow-md flex items-center max-w-md w-full">
+      <Alert variant="default" className="max-w-md w-full">
         <Check className="h-5 w-5 mr-2 flex-shrink-0" />
-        <span className="flex-grow">{message}</span>
-        <button
-          onClick={onClose}
-          className="ml-2 text-primary-foreground hover:text-primary-foreground/80 flex-shrink-0"
-        >
+        <AlertDescription className="flex-grow">{message}</AlertDescription>
+        <button onClick={onClose} className="ml-2 hover:opacity-80 flex-shrink-0">
           <X className="h-5 w-5" />
         </button>
-      </div>
+      </Alert>
     </div>
   )
 }

@@ -6,6 +6,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Check, X, ArrowLeft } from "lucide-react"
 import type { AdFormData } from "../types"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 
 interface PaymentDetailsFormProps {
   onBack: () => void
@@ -102,51 +105,49 @@ export default function PaymentDetailsForm({
   return (
     <div className="h-full flex flex-col">
       <div className="p-6 border-b relative">
-        <button onClick={onBack} className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+        <Button variant="ghost" size="icon" onClick={onBack} className="absolute left-6 top-1/2 -translate-y-1/2">
           <ArrowLeft className="h-5 w-5" />
-        </button>
+        </Button>
         <h2 className="text-xl font-semibold text-center">
           {isEditMode ? "Edit payment details" : "Set payment details"}
         </h2>
-        <button
-          onClick={onClose}
-          className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-        >
+        <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
           <X className="h-5 w-5" />
-        </button>
+        </Button>
       </div>
 
       <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1 p-6">
         <div className="max-w-[800px] mx-auto h-full flex flex-col justify-between">
           <div className="space-y-12">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <div className="flex items-center gap-2 text-sm text-blue-900">
+            <Alert className="bg-blue-50 text-blue-900">
+              <AlertDescription className="flex items-center gap-2 text-sm">
                 <span>
                   You're {isEditMode ? "editing" : "creating"} an ad to {initialData.type} USD{" "}
                   {initialData.totalAmount?.toFixed(2)}
                 </span>
                 <span>for IDR {((initialData.totalAmount || 0) * (initialData.fixedRate || 0)).toFixed(2)}</span>
-              </div>
-            </div>
+              </AlertDescription>
+            </Alert>
 
             {initialData.type === "buy" ? (
               <div>
                 <h3 className="text-base font-medium mb-6">Select payment methods</h3>
                 <div className="space-y-2">
                   {availablePaymentMethods.map((method) => (
-                    <button
+                    <Card
                       key={method}
-                      type="button"
-                      onClick={() => togglePaymentMethod(method)}
-                      className={`w-full flex items-center justify-between px-4 py-3 rounded border ${
+                      className={`w-full cursor-pointer ${
                         paymentMethods.includes(method)
                           ? "border-primary bg-primary/5"
-                          : "border-gray-200 hover:border-gray-300"
+                          : "border-input hover:border-ring"
                       }`}
+                      onClick={() => togglePaymentMethod(method)}
                     >
-                      <span className="text-sm">{method}</span>
-                      {paymentMethods.includes(method) && <Check className="h-4 w-4 text-primary" />}
-                    </button>
+                      <CardContent className="flex items-center justify-between p-3">
+                        <span className="text-sm">{method}</span>
+                        {paymentMethods.includes(method) && <Check className="h-4 w-4 text-primary" />}
+                      </CardContent>
+                    </Card>
                   ))}
                   {touched && paymentMethods.length === 0 && (
                     <p className="text-destructive text-xs mt-1">At least one payment method is required</p>
@@ -176,6 +177,24 @@ export default function PaymentDetailsForm({
           </div>
         </div>
       </form>
+
+      {/* Fixed positioned button at bottom right */}
+      <div className="fixed bottom-6 right-6">
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!isFormValid() || isSubmitting}
+          className="rounded-full px-8"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center gap-2">{isEditMode ? "Saving..." : "Creating..."}</span>
+          ) : isEditMode ? (
+            "Save Changes"
+          ) : (
+            "Create Ad"
+          )}
+        </Button>
+      </div>
     </div>
   )
 }

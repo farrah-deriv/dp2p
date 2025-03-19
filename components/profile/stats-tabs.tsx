@@ -1,9 +1,8 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
-import { cn } from "@/lib/utils"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 interface StatsTabsProps {
   children: React.ReactNode
@@ -20,25 +19,27 @@ export default function StatsTabs({ children }: StatsTabsProps) {
   ]
 
   return (
-    <div>
-      <div className="border rounded-lg overflow-hidden">
-        <div className="flex border-b">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={cn(
-                "px-4 py-3 text-sm font-medium flex-1 text-center",
-                activeTab === tab.id ? "bg-gray-100 text-gray-900" : "bg-white text-gray-500 hover:bg-gray-50",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-        <div className="p-4">{children}</div>
-      </div>
-    </div>
+    <Tabs defaultValue="stats" className="w-full">
+      <TabsList className="grid grid-cols-4 w-full">
+        {tabs.map((tab) => (
+          <TabsTrigger key={tab.id} value={tab.id}>
+            {tab.label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      <TabsContent value="stats" className="p-4 border rounded-b-lg">
+        {children}
+      </TabsContent>
+      <TabsContent value="payment" className="p-4 border rounded-b-lg">
+        Payment methods content
+      </TabsContent>
+      <TabsContent value="ads" className="p-4 border rounded-b-lg">
+        Ad details content
+      </TabsContent>
+      <TabsContent value="counterparties" className="p-4 border rounded-b-lg">
+        My counterparties content
+      </TabsContent>
+    </Tabs>
   )
 }
 

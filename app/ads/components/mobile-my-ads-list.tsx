@@ -8,6 +8,16 @@ import { Button } from "@/components/ui/button"
 import { deleteAd, updateAd } from "../api/api-ads"
 import type { Ad } from "../types"
 import StatusModal from "@/components/ui/status-modal"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge"
 
 interface MobileMyAdsListProps {
   ads: Ad[]
@@ -35,11 +45,23 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs">Active</span>
+        return (
+          <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100">
+            Active
+          </Badge>
+        )
       case "Inactive":
-        return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
+        return (
+          <Badge variant="outline" className="bg-amber-100 text-amber-800 hover:bg-amber-100">
+            Inactive
+          </Badge>
+        )
       default:
-        return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
+        return (
+          <Badge variant="outline" className="bg-amber-100 text-amber-800 hover:bg-amber-100">
+            Inactive
+          </Badge>
+        )
     }
   }
 
@@ -209,10 +231,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
         <p className="text-gray-600 mb-6 text-center">
           Looking to buy or sell USD? You can post your own ad for others to respond.
         </p>
-        <Button
-          onClick={() => router.push("/ads/create")}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
-        >
+        <Button onClick={() => router.push("/ads/create")} className="rounded-full px-8">
           Create ad
         </Button>
       </div>
@@ -296,14 +315,10 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
                   <div className="font-medium">
                     USD {(ad.available.current || 0).toFixed(2)} / {(ad.available.total || 0).toFixed(2)}
                   </div>
-                  <div className="h-2 bg-gray-200 rounded-full w-32 overflow-hidden mt-1">
-                    <div
-                      className="h-full bg-black rounded-full"
-                      style={{
-                        width: `${ad.available.total ? ((ad.available.current || 0) / ad.available.total) * 100 : 0}%`,
-                      }}
-                    ></div>
-                  </div>
+                  <Progress
+                    value={ad.available.total ? ((ad.available.current || 0) / ad.available.total) * 100 : 0}
+                    className="h-2 w-32 mt-1"
+                  />
                 </div>
               </div>
 
@@ -317,31 +332,25 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
       </div>
 
       {/* Delete Confirmation Modal */}
-      {deleteConfirmModal.show && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h2 className="text-xl font-semibold mb-4 text-center">Delete ad?</h2>
-            <p className="text-gray-600 mb-6 text-center">You will not be able to restore it.</p>
-
-            <div className="space-y-3">
-              <button
-                onClick={confirmDelete}
-                disabled={isDeleting}
-                className="w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium"
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
-              </button>
-
-              <button
-                onClick={cancelDelete}
-                className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Dialog
+        open={deleteConfirmModal.show}
+        onOpenChange={(open) => !open && setDeleteConfirmModal({ show: false, adId: "" })}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete ad?</DialogTitle>
+            <DialogDescription>You will not be able to restore it.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:justify-center">
+            <Button variant="destructive" onClick={confirmDelete} disabled={isDeleting} className="w-full sm:w-auto">
+              {isDeleting ? "Deleting..." : "Delete"}
+            </Button>
+            <Button variant="outline" onClick={cancelDelete} className="w-full sm:w-auto">
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Error Modal */}
       {errorModal.show && (

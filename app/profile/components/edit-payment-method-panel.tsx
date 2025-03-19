@@ -1,12 +1,14 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useEffect } from "react"
-import { X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 interface EditPaymentMethodPanelProps {
   onClose: () => void
@@ -27,96 +29,50 @@ export default function EditPaymentMethodPanel({
   isLoading,
   paymentMethod,
 }: EditPaymentMethodPanelProps) {
-  const [details, setDetails] = useState<Record<string, string>>({})
-  const [instructions, setInstructions] = useState("")
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [charCount, setCharCount] = useState(0)
 
-  // Initialize form with payment method details
-  useEffect(() => {
-    if (paymentMethod) {
-      // Set details from payment method
-      setDetails({
-        ...paymentMethod.details,
-        method_type: paymentMethod.type, // Add method_type to track the payment method type
-      })
-
-      // Set instructions if available
-      setInstructions(paymentMethod.instructions || "")
-
-      // Reset errors and touched state
-      setErrors({})
-      setTouched({})
+  // Create a dynamic schema based on payment method type
+  const createFormSchema = () => {
+    const baseSchema: Record<string, any> = {
+      instructions: z.string().optional(),
     }
-  }, [paymentMethod])
+
+    // Add fields based on payment method type
+    if (paymentMethod.type === "alipay") {
+      baseSchema.account = z.string().min(1, "Alipay ID is required")
+    } else if (["google_pay", "paypal", "skrill"].includes(paymentMethod.type)) {
+      baseSchema.identifier = z.string().min(1, "Identifier is required")
+    } else if (paymentMethod.type === "bank_transfer") {
+      baseSchema.account_number = z.string().min(1, "Account number is required")
+      baseSchema.bank_name = z.string().min(1, "Bank name is required")
+      baseSchema.swift_code = z.string().optional()
+      baseSchema.branch = z.string().optional()
+    }
+
+    return z.object(baseSchema)
+  }
+
+  // Create form schema
+  const formSchema = createFormSchema()
+
+  // Create form with initial values
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      ...paymentMethod.details,
+      instructions: paymentMethod.instructions || "",
+    },
+  })
 
   // Update character count for instructions
   useEffect(() => {
+    const instructions = form.watch("instructions") || ""
     setCharCount(instructions.length)
-  }, [instructions])
+  }, [form.watch("instructions")])
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {}
-
-    // Validate based on payment method type
-    if (paymentMethod.type === "alipay") {
-      if (!details.account?.trim()) {
-        newErrors.account = "Alipay ID is required"
-      }
-    } else if (["google_pay", "paypal", "skrill"].includes(paymentMethod.type)) {
-      if (!details.identifier?.trim()) {
-        newErrors.identifier = "Identifier is required"
-      }
-    } else if (paymentMethod.type === "bank_transfer") {
-      if (!details.account_number?.trim()) {
-        newErrors.account_number = "Account number is required"
-      }
-      if (!details.bank_name?.trim()) {
-        newErrors.bank_name = "Bank name is required"
-      }
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleInputChange = (name: string, value: string) => {
-    setDetails((prev) => ({ ...prev, [name]: value }))
-    setTouched((prev) => ({ ...prev, [name]: true }))
-
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
-    }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    // Mark all fields as touched
-    const allTouched: Record<string, boolean> = {}
-    Object.keys(details).forEach((key) => {
-      allTouched[key] = true
-    })
-    setTouched(allTouched)
-
-    if (validateForm()) {
-      // Create a fields object with all the form field values
-      const fieldValues = { ...details }
-
-      // Add instructions if present
-      if (instructions.trim()) {
-        fieldValues.instructions = instructions.trim()
-      }
-
-      // Pass the payment method ID and field values to the parent component
-      onSave(paymentMethod.id, fieldValues)
-    }
+  // Handle form submission
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    onSave(paymentMethod.id, values)
   }
 
   // Get field label based on field name
@@ -142,72 +98,73 @@ export default function EditPaymentMethodPanel({
   }
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl flex flex-col">
-      <div className="p-6 border-b relative">
-        <h2 className="text-xl font-semibold">Edit payment method</h2>
-        <button
-          onClick={onClose}
-          className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-        >
-          <X className="h-5 w-5" />
-        </button>
-      </div>
+    <Sheet open={true} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent className="sm:max-w-md">
+        <SheetHeader>
+          <SheetTitle>Edit payment method</SheetTitle>
+        </SheetHeader>
 
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
-          <div className="text-lg font-medium">{paymentMethod.name}</div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto py-6 space-y-6">
+              <div className="text-lg font-medium">{paymentMethod.name}</div>
 
-          <div className="space-y-4">
-            {Object.entries(details)
-              .filter(([fieldName]) => fieldName !== "instructions") // Filter out instructions field to avoid duplication
-              .map(([fieldName, fieldValue]) => (
-                <div key={fieldName}>
-                  <label htmlFor={fieldName} className="block text-sm font-medium text-gray-500 mb-2">
-                    {getFieldLabel(fieldName)}
-                  </label>
-                  <Input
-                    id={fieldName}
-                    type={getFieldType(fieldName)}
-                    value={fieldValue || ""}
-                    onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                    placeholder={`Enter ${getFieldLabel(fieldName).toLowerCase()}`}
-                    className={touched[fieldName] && errors[fieldName] ? "border-red-500" : ""}
-                  />
-                  {touched[fieldName] && errors[fieldName] && (
-                    <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>
-                  )}
-                </div>
-              ))}
-          </div>
+              <div className="space-y-4">
+                {Object.keys(paymentMethod.details)
+                  .filter((fieldName) => fieldName !== "instructions")
+                  .map((fieldName) => (
+                    <FormField
+                      key={fieldName}
+                      control={form.control}
+                      name={fieldName as any}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-sm font-medium text-gray-500">
+                            {getFieldLabel(fieldName)}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type={getFieldType(fieldName)}
+                              placeholder={`Enter ${getFieldLabel(fieldName).toLowerCase()}`}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+              </div>
 
-          <div>
-            <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
-              Instructions
-            </label>
-            <Textarea
-              id="instructions"
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-              placeholder="Enter your instructions"
-              className="min-h-[120px] resize-none"
-              maxLength={300}
-            />
-            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
-          </div>
-        </div>
-      </form>
+              <FormField
+                control={form.control}
+                name="instructions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-500">Instructions</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter your instructions"
+                        className="min-h-[120px] resize-none"
+                        maxLength={300}
+                        {...field}
+                      />
+                    </FormControl>
+                    <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-      <div className="p-6 border-t">
-        <Button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isLoading}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-md"
-        >
-          {isLoading ? "Saving..." : "Save details"}
-        </Button>
-      </div>
-    </div>
+            <SheetFooter className="pt-4 border-t">
+              <Button type="submit" disabled={isLoading} className="w-full">
+                {isLoading ? "Saving..." : "Save details"}
+              </Button>
+            </SheetFooter>
+          </form>
+        </Form>
+      </SheetContent>
+    </Sheet>
   )
 }
 

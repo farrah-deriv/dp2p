@@ -10,6 +10,15 @@ import StatusModal from "@/components/ui/status-modal"
 import { ProfileAPI } from "../api"
 import NotificationBanner from "./notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 
 interface PaymentMethod {
   id: string
@@ -404,12 +413,9 @@ export default function PaymentMethodsTab() {
     return (
       <div className="flex flex-col items-center justify-center py-8">
         <p className="text-red-500 mb-4">{error}</p>
-        <button
-          onClick={fetchPaymentMethods}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded"
-        >
+        <Button onClick={fetchPaymentMethods} className="rounded-md">
           Try again
-        </button>
+        </Button>
       </div>
     )
   }
@@ -518,33 +524,32 @@ export default function PaymentMethodsTab() {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {deleteConfirmModal.show && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h2 className="text-xl font-semibold mb-4 text-center">Delete payment method?</h2>
-            <p className="text-gray-600 mb-6 text-center">
+      <Dialog
+        open={deleteConfirmModal.show}
+        onOpenChange={(open) => !open && setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Delete payment method?</DialogTitle>
+            <DialogDescription>
               Are you sure you want to delete {deleteConfirmModal.methodName}? You will not be able to restore it.
-            </p>
-
-            <div className="space-y-3">
-              <button
-                onClick={confirmDeletePaymentMethod}
-                disabled={isDeleting}
-                className="w-full py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium"
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
-              </button>
-
-              <button
-                onClick={cancelDeletePaymentMethod}
-                className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:justify-center">
+            <Button
+              variant="destructive"
+              onClick={confirmDeletePaymentMethod}
+              disabled={isDeleting}
+              className="w-full sm:w-auto"
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </Button>
+            <Button variant="outline" onClick={cancelDeletePaymentMethod} className="w-full sm:w-auto">
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Edit Payment Method Panel */}
       {editPanel.show && editPanel.paymentMethod && (
