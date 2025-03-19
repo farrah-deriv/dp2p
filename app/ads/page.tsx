@@ -11,6 +11,8 @@ import { Check } from "lucide-react"
 import type { MyAd, SuccessData } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 export default function AdsPage() {
   const [ads, setAds] = useState<MyAd[]>([])
@@ -28,6 +30,7 @@ export default function AdsPage() {
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [showUpdatedBanner, setShowUpdatedBanner] = useState(false)
   const isMobile = useIsMobile()
+  const router = useRouter()
 
   // Add error modal state
   const [errorModal, setErrorModal] = useState({
@@ -145,6 +148,12 @@ export default function AdsPage() {
       {/* Fixed controls section */}
       <div className="flex-none container mx-auto px-4">
         <MyAdsHeader hasAds={ads.length > 0} />
+        <Button
+          onClick={() => router.push("/ads/create")}
+          className="bg-primary hover:bg-primary/90 text-white rounded-full px-6"
+        >
+          Create Ad
+        </Button>
       </div>
 
       {/* Content area with fixed table header and scrollable body */}

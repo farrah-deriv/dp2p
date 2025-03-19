@@ -140,12 +140,12 @@ export default function PaymentDetailsForm({
                       onClick={() => togglePaymentMethod(method)}
                       className={`w-full flex items-center justify-between px-4 py-3 rounded border ${
                         paymentMethods.includes(method)
-                          ? "border-green-500 bg-green-50"
+                          ? "border-primary bg-primary/5"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
                       <span className="text-sm">{method}</span>
-                      {paymentMethods.includes(method) && <Check className="h-4 w-4 text-green-500" />}
+                      {paymentMethods.includes(method) && <Check className="h-4 w-4 text-primary" />}
                     </button>
                   ))}
                   {touched && paymentMethods.length === 0 && (

@@ -37,9 +37,9 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
       case "Active":
         return <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span>
       case "Inactive":
-        return <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Inactive</span>
+        return <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">Inactive</span>
       default:
-        return <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Inactive</span>
+        return <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">Inactive</span>
     }
   }
 
@@ -217,7 +217,7 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
             >
               <div>
                 <div className="flex items-center gap-2">
-                  <span className={`font-medium ${ad.type === "Buy" ? "text-green-600" : "text-red-600"}`}>
+                  <span className={`font-medium ${ad.type === "Buy" ? "text-green-600" : "text-amber-600"}`}>
                     {ad.type}
                   </span>
                   <span className="text-gray-900 font-medium">{ad.id}</span>

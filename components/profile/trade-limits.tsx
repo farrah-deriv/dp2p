@@ -32,13 +32,13 @@ export default function TradeLimits({ buyLimit, sellLimit }: TradeLimitsProps) {
 
         <div>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-red-600 font-medium">Sell</span>
+            <span className="text-amber-600 font-medium">Sell</span>
             <span className="text-sm">
               USD {sellLimit.current.toFixed(2)} / {sellLimit.max.toFixed(2)}
             </span>
           </div>
           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-red-600 rounded-full" style={{ width: `${sellPercentage}%` }}></div>
+            <div className="h-full bg-amber-600 rounded-full" style={{ width: `${sellPercentage}%` }}></div>
           </div>
         </div>
       </div>

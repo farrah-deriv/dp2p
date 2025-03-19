@@ -45,9 +45,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
       case "Active":
         return <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs">Active</span>
       case "Inactive":
-        return <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Inactive</span>
+        return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
       default:
-        return <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs">Inactive</span>
+        return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
     }
   }
 
@@ -262,7 +262,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                 <tr key={index} className={`border-b ${ad.status === "Inactive" ? "grayscale opacity-50" : ""}`}>
                   <td className="py-4 w-[18%]">
                     <div>
-                      <span className={`font-medium ${ad.type === "Buy" ? "text-green-600" : "text-red-600"}`}>
+                      <span className={`font-medium ${ad.type === "Buy" ? "text-green-600" : "text-amber-600"}`}>
                         {ad.type}
                       </span>
                       <span className="text-[#101213] font-medium"> {ad.id}</span>
@@ -317,7 +317,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                           Share
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-red-500 focus:text-red-500"
+                          className="flex items-center gap-2 text-destructive focus:text-destructive"
                           onSelect={() => handleDelete(ad.id)}
                         >
                           <Trash2 className="h-4 w-4" />
@@ -344,7 +344,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               <button
                 onClick={confirmDelete}
                 disabled={isDeleting}
-                className="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium"
+                className="w-full py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium"
               >
                 {isDeleting ? "Deleting..." : "Delete"}
               </button>
