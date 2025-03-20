@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
-import { ArrowLeft, Monitor, Info } from 'lucide-react'
+import { Monitor, Info } from 'lucide-react'
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -18,10 +18,13 @@ export default function Navigation() {
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mb-6">
+<<<<<<< HEAD
         <Link href="/" className="flex items-center text-gray-700">
           <ArrowLeft className="h-5 w-5 mr-2" />
           <h1 className="text-xl font-bold">P2P Wallet</h1>
         </Link>
+=======
+>>>>>>> 9aae924 (fix: colors)
         <div className="flex items-center gap-4">
           <button className="text-gray-500">
             <Monitor className="h-5 w-5" />
