@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { deleteAd, updateAd } from "../api/api-ads"
 import type { MyAd } from "../types"
 import StatusModal from "@/components/ui/status-modal"
-import { Progress } from "@/components/ui/progress"
+import { DeleteConfirmationDialog } from "@/components/ui/delete-confirmation-dialog"
 
 interface MyAdsMobileViewProps {
   ads: MyAd[]
@@ -247,10 +247,14 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
                     <div className="font-medium mb-1">
                       {ad.available.currency} {ad.available.current.toFixed(2)} / {ad.available.total.toFixed(2)}
                     </div>
-                    <Progress
-                      value={ad.available.total ? (ad.available.current / ad.available.total) * 100 : 0}
-                      className="h-2"
-                    />
+                    <div className="h-2 bg-gray-200 rounded-full w-full overflow-hidden">
+                      <div
+                        className="h-full bg-black rounded-full"
+                        style={{
+                          width: `${ad.available.total ? (ad.available.current / ad.available.total) * 100 : 0}%`,
+                        }}
+                      ></div>
+                    </div>
                   </div>
 
                   <div>
@@ -260,47 +264,47 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
 
                   {/* Action buttons */}
                   <div className="flex flex-wrap gap-2 mt-4 pt-2 border-t">
-                    <Button
-                      variant="outline"
-                      size="sm"
+                    <button
                       onClick={() => handleEdit(ad)}
-                      className="flex items-center gap-1"
+                      className="flex items-center gap-1 px-3 py-2 bg-gray-100 rounded-md text-sm"
                     >
                       <Pencil className="h-4 w-4" />
                       Edit
-                    </Button>
+                    </button>
 
-                    <Button
-                      variant="outline"
-                      size="sm"
+                    <button
                       onClick={() => handleToggleStatus(ad)}
                       disabled={isTogglingStatus}
-                      className="flex items-center gap-1"
+                      className="flex items-center gap-1 px-3 py-2 bg-gray-100 rounded-md text-sm"
                     >
                       <Power className="h-4 w-4" />
                       {isTogglingStatus ? "Updating..." : ad.status === "Active" ? "Deactivate" : "Activate"}
-                    </Button>
+                    </button>
 
                     {/* Disabled buttons for Copy and Share */}
-                    <Button variant="outline" size="sm" className="flex items-center gap-1 text-gray-400" disabled>
+                    <button
+                      className="flex items-center gap-1 px-3 py-2 bg-gray-100 rounded-md text-sm text-gray-400 cursor-not-allowed"
+                      disabled
+                    >
                       <Copy className="h-4 w-4" />
                       Copy
-                    </Button>
+                    </button>
 
-                    <Button variant="outline" size="sm" className="flex items-center gap-1 text-gray-400" disabled>
+                    <button
+                      className="flex items-center gap-1 px-3 py-2 bg-gray-100 rounded-md text-sm text-gray-400 cursor-not-allowed"
+                      disabled
+                    >
                       <Share2 className="h-4 w-4" />
                       Share
-                    </Button>
+                    </button>
 
-                    <Button
-                      variant="destructive"
-                      size="sm"
+                    <button
                       onClick={() => handleDelete(ad.id)}
-                      className="flex items-center gap-1"
+                      className="flex items-center gap-1 px-3 py-2 bg-red-100 text-red-600 rounded-md text-sm"
                     >
                       <Trash2 className="h-4 w-4" />
                       Delete
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -310,31 +314,14 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
       </div>
 
       {/* Delete Confirmation Modal */}
-      {deleteConfirmModal.show && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h2 className="text-xl font-semibold mb-4 text-center">Delete ad?</h2>
-            <p className="text-gray-600 mb-6 text-center">You will not be able to restore it.</p>
-
-            <div className="space-y-3">
-              <button
-                onClick={confirmDelete}
-                disabled={isDeleting}
-                className="w-full py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium"
-              >
-                {isDeleting ? "Deleting..." : "Delete"}
-              </button>
-
-              <button
-                onClick={cancelDelete}
-                className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg font-medium"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DeleteConfirmationDialog
+        open={deleteConfirmModal.show}
+        title="Delete ad?"
+        description="You will not be able to restore it."
+        isDeleting={isDeleting}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
 
       {/* Error Modal */}
       {errorModal.show && (

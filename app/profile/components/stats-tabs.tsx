@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { useState } from "react"
-import { cn } from "@/lib/utils"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
@@ -10,6 +9,8 @@ import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "@/components/ui/status-modal"
 import NotificationBanner from "./notification-banner"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PlusCircle } from "lucide-react"
 
 interface StatsTabsProps {
   children?: React.ReactNode
@@ -101,40 +102,42 @@ export default function StatsTabs({ children, stats }: StatsTabsProps) {
         />
       )}
 
-      <div className="flex justify-between items-center mb-6">
-        <div className="bg-gray-100 rounded-lg overflow-hidden">
-          <div className="flex">
+      <Tabs defaultValue="stats" value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <div className="flex justify-between items-center mb-6">
+          <TabsList className="bg-gray-100">
             {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  "px-6 py-3 text-sm font-medium",
-                  activeTab === tab.id ? "bg-white text-gray-900" : "bg-gray-100 text-gray-500 hover:bg-gray-50",
-                )}
-              >
+              <TabsTrigger key={tab.id} value={tab.id} className="px-6 py-3 text-sm font-medium">
                 {tab.label}
-              </button>
+              </TabsTrigger>
             ))}
-          </div>
+          </TabsList>
+
+          {activeTab === "payment" && (
+            <Button
+              variant="default"
+              size="default"
+              className="rounded-full"
+              onClick={() => setShowAddPaymentMethodPanel(true)}
+            >
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add payment method
+            </Button>
+          )}
         </div>
 
-        {activeTab === "payment" && (
-          <Button
-            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4"
-            onClick={() => setShowAddPaymentMethodPanel(true)}
-          >
-            Add payment method
-          </Button>
-        )}
-      </div>
-
-      <div>
-        {activeTab === "stats" && <StatsGrid stats={stats} />}
-        {activeTab === "payment" && <PaymentMethodsTab key={refreshKey} />}
-        {activeTab === "ads" && <div>Ad details content</div>}
-        {activeTab === "counterparties" && <div>My counterparties content</div>}
-      </div>
+        <TabsContent value="stats">
+          <StatsGrid stats={stats} />
+        </TabsContent>
+        <TabsContent value="payment">
+          <PaymentMethodsTab key={refreshKey} />
+        </TabsContent>
+        <TabsContent value="ads">
+          <div>Ad details content</div>
+        </TabsContent>
+        <TabsContent value="counterparties">
+          <div>My counterparties content</div>
+        </TabsContent>
+      </Tabs>
 
       {showAddPaymentMethodPanel && (
         <AddPaymentMethodPanel

@@ -7,7 +7,7 @@ import { Check, X, ArrowLeft } from "lucide-react"
 import type { AdFormData } from "../types"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
+import { InfoIcon } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
 interface PaymentDetailsFormProps {
@@ -105,21 +105,25 @@ export default function PaymentDetailsForm({
   return (
     <div className="h-full flex flex-col">
       <div className="p-6 border-b relative">
-        <Button variant="ghost" size="icon" onClick={onBack} className="absolute left-6 top-1/2 -translate-y-1/2">
+        <button onClick={onBack} className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
           <ArrowLeft className="h-5 w-5" />
-        </Button>
+        </button>
         <h2 className="text-xl font-semibold text-center">
           {isEditMode ? "Edit payment details" : "Set payment details"}
         </h2>
-        <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
+        <button
+          onClick={onClose}
+          className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+        >
           <X className="h-5 w-5" />
-        </Button>
+        </button>
       </div>
 
       <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1 p-6">
         <div className="max-w-[800px] mx-auto h-full flex flex-col justify-between">
           <div className="space-y-12">
-            <Alert className="bg-blue-50 text-blue-900">
+            <Alert variant="info" className="bg-blue-50 border-blue-200 text-blue-900">
+              <InfoIcon className="h-4 w-4 text-blue-900" />
               <AlertDescription className="flex items-center gap-2 text-sm">
                 <span>
                   You're {isEditMode ? "editing" : "creating"} an ad to {initialData.type} USD{" "}
@@ -136,14 +140,12 @@ export default function PaymentDetailsForm({
                   {availablePaymentMethods.map((method) => (
                     <Card
                       key={method}
-                      className={`w-full cursor-pointer ${
-                        paymentMethods.includes(method)
-                          ? "border-primary bg-primary/5"
-                          : "border-input hover:border-ring"
+                      className={`cursor-pointer hover:border-gray-300 ${
+                        paymentMethods.includes(method) ? "border-primary bg-primary/5" : ""
                       }`}
                       onClick={() => togglePaymentMethod(method)}
                     >
-                      <CardContent className="flex items-center justify-between p-3">
+                      <CardContent className="p-3 flex items-center justify-between">
                         <span className="text-sm">{method}</span>
                         {paymentMethods.includes(method) && <Check className="h-4 w-4 text-primary" />}
                       </CardContent>
@@ -177,24 +179,6 @@ export default function PaymentDetailsForm({
           </div>
         </div>
       </form>
-
-      {/* Fixed positioned button at bottom right */}
-      <div className="fixed bottom-6 right-6">
-        <Button
-          type="button"
-          onClick={handleSubmit}
-          disabled={!isFormValid() || isSubmitting}
-          className="rounded-full px-8"
-        >
-          {isSubmitting ? (
-            <span className="flex items-center gap-2">{isEditMode ? "Saving..." : "Creating..."}</span>
-          ) : isEditMode ? (
-            "Save Changes"
-          ) : (
-            "Create Ad"
-          )}
-        </Button>
-      </div>
     </div>
   )
 }

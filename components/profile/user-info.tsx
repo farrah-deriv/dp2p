@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { Star, Check, Info } from "lucide-react"
 import { Switch } from "@/components/ui/switch"
 import { USER } from "@/lib/local-variables"
-import { Badge } from "@/components/ui/badge"
 
 interface UserInfoProps {
   username: string
@@ -70,22 +69,22 @@ export default function UserInfo({
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {isVerified.id && (
-              <Badge variant="outline" className="bg-primary/10 text-primary flex items-center">
+              <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs flex items-center">
                 <Check className="h-3 w-3 mr-1" />
                 ID
-              </Badge>
+              </div>
             )}
             {isVerified.address && (
-              <Badge variant="outline" className="bg-primary/10 text-primary flex items-center">
+              <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs flex items-center">
                 <Check className="h-3 w-3 mr-1" />
                 Address
-              </Badge>
+              </div>
             )}
             {isVerified.phone && (
-              <Badge variant="outline" className="bg-primary/10 text-primary flex items-center">
+              <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs flex items-center">
                 <Check className="h-3 w-3 mr-1" />
                 Phone number
-              </Badge>
+              </div>
             )}
           </div>
         </div>

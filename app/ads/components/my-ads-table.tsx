@@ -8,16 +8,7 @@ import { Button } from "@/components/ui/button"
 import { deleteAd, updateAd } from "../api/api-ads"
 import type { Ad } from "../types"
 import StatusModal from "@/components/ui/status-modal"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
+import { DeleteConfirmationDialog } from "@/components/ui/delete-confirmation-dialog"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -54,23 +45,11 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Active":
-        return (
-          <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100">
-            Active
-          </Badge>
-        )
+        return <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs">Active</span>
       case "Inactive":
-        return (
-          <Badge variant="outline" className="bg-red-100 text-red-800 hover:bg-red-100">
-            Inactive
-          </Badge>
-        )
+        return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
       default:
-        return (
-          <Badge variant="outline" className="bg-red-100 text-red-800 hover:bg-red-100">
-            Inactive
-          </Badge>
-        )
+        return <span className="px-3 py-1 bg-destructive/10 text-destructive rounded-full text-xs">Inactive</span>
     }
   }
 
@@ -240,7 +219,10 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
         <p className="text-gray-600 mb-6 text-center">
           Looking to buy or sell USD? You can post your own ad for others to respond.
         </p>
-        <Button onClick={() => router.push("/ads/create")} className="rounded-full px-8">
+        <Button
+          onClick={() => router.push("/ads/create")}
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
+        >
           Create ad
         </Button>
       </div>
@@ -297,10 +279,14 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                     <div className="mb-1">
                       USD {(ad.available.current || 0).toFixed(2)} / {(ad.available.total || 0).toFixed(2)}
                     </div>
-                    <Progress
-                      value={ad.available.total ? ((ad.available.current || 0) / ad.available.total) * 100 : 0}
-                      className="h-2 w-32"
-                    />
+                    <div className="h-2 bg-gray-200 rounded-full w-32 overflow-hidden">
+                      <div
+                        className="h-full bg-black rounded-full"
+                        style={{
+                          width: `${ad.available.total ? ((ad.available.current || 0) / ad.available.total) * 100 : 0}%`,
+                        }}
+                      ></div>
+                    </div>
                   </td>
                   <td className="py-4 w-[18%] truncate">{ad.paymentMethods.join(", ")}</td>
                   <td className="py-4 w-[100px] whitespace-nowrap">{getStatusBadge(ad.status)}</td>
@@ -349,26 +335,14 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
         </div>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      <Dialog
+      <DeleteConfirmationDialog
         open={deleteConfirmModal.show}
-        onOpenChange={(open) => !open && setDeleteConfirmModal({ show: false, adId: "" })}
-      >
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Delete ad?</DialogTitle>
-            <DialogDescription>You will not be able to restore it.</DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:justify-center">
-            <Button variant="destructive" onClick={confirmDelete} disabled={isDeleting} className="w-full sm:w-auto">
-              {isDeleting ? "Deleting..." : "Delete"}
-            </Button>
-            <Button variant="outline" onClick={cancelDelete} className="w-full sm:w-auto">
-              Cancel
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+        title="Delete ad?"
+        description="You will not be able to restore it."
+        isDeleting={isDeleting}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
 
       {/* Error Modal */}
       {errorModal.show && (

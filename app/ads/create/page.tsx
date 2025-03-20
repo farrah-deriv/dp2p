@@ -407,17 +407,11 @@ export default function CreateAdPage() {
           <Button
             onClick={handleButtonClick}
             disabled={isSubmitting || (currentStep === 0 && !adFormValid) || (currentStep === 1 && !paymentFormValid)}
-            className={`px-8 py-2.5 rounded-full text-sm w-36 h-10
-      ${
-        currentStep === 0
-          ? !adFormValid && "bg-gray-100 text-gray-500"
-          : isSubmitting
-            ? "opacity-70"
-            : !paymentFormValid && "bg-gray-100 text-gray-500"
-      }`}
             variant={
               (currentStep === 0 && !adFormValid) || (currentStep === 1 && !paymentFormValid) ? "outline" : "default"
             }
+            size="default"
+            className="rounded-full w-36"
           >
             {isSubmitting ? (
               <div className="flex items-center gap-2">
