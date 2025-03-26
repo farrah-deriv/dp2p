@@ -50,8 +50,8 @@ export default function OrdersPage() {
       const filteredData =
         activeTab === "past"
           ? ordersArray.filter(
-              (order) => order.status === "Completed" || order.status === "Cancelled" || order.status === "Disputed",
-            )
+            (order) => order.status === "Completed" || order.status === "Cancelled" || order.status === "Disputed",
+          )
           : ordersArray
 
       setOrders(filteredData)
@@ -278,4 +278,3 @@ export default function OrdersPage() {
     </div>
   )
 }
-
