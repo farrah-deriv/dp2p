@@ -1,12 +1,12 @@
 export const USER = {
   id: process.env.NEXT_PUBLIC_USER_ID ?? "",
-  nickname: process.env.NEXT_PUBLIC_USER_NICKNAME ?? "",
-  token: process.env.NEXT_PUBLIC_USER ?? "",
+  nickname: process.env.NEXT_PUBLIC_USER_NICKNAME,
+  token: process.env.NEXT_PUBLIC_USER,
 }
 
 export const API = {
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL ?? "",
-  socketUrl: process.env.NEXT_PUBLIC_SOCKET_URL ?? "",
+  baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+  socketUrl: process.env.NEXT_PUBLIC_SOCKET_URL,
   endpoints: {
     ads: "/adverts",
     orders: "/orders",
@@ -21,10 +21,10 @@ export const API = {
 }
 
 export const WALLETS = {
-  cashierUrl: process.env.NEXT_PUBLIC_CASHIER_URL ?? "",
+  cashierUrl: process.env.NEXT_PUBLIC_CASHIER_URL,
   defaultParams: {
-    client_id: process.env.NEXT_PUBLIC_WALLETS_CLIENT_ID ?? "",
-    wallet_id: process.env.NEXT_PUBLIC_WALLETS_ID ?? "",
+    client_id: process.env.NEXT_PUBLIC_WALLETS_CLIENT_ID,
+    wallet_id: process.env.NEXT_PUBLIC_WALLETS_ID,
     brand: "uae",
     operation: "DEPOSIT",
     currency: "USD",
@@ -42,15 +42,15 @@ export const AUTH = {
   getAuthHeader: () => ({
     Authorization: `Bearer ${USER.token}`,
     // Read headers from environment variables with fallbacks
-    "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE ?? "",
-    "X-Branch": process.env.NEXT_PUBLIC_BRANCH ?? "",
+    "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
+    "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
   }),
   isAuthenticated: () => !!USER.token,
 }
 
 export const NOTIFICATIONS = {
-  applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID ?? "",
-  subscriberHashUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL ?? "",
+  applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
+  subscriberHashUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
 }
 
 export default {
