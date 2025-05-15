@@ -35,7 +35,7 @@ export function RateInput({ value, onChange, onBlur, step, min, error = false }:
             onChange={handleChange}
             onBlur={onBlur}
             step={step}
-            min={min}
+            min={typeof min === "number" ? min : undefined}
             placeholder="0.00"
             className="w-full p-4 border-0 focus:ring-0 focus:outline-none text-gray-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             aria-invalid={error}

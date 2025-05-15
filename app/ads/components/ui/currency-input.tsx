@@ -23,6 +23,7 @@ export function CurrencyInput({
   isEditMode = false,
   disabled,
   error = false,
+  min,
   ...props
 }: CurrencyInputProps) {
   // Combine the isEditMode prop with any existing disabled prop
@@ -59,6 +60,7 @@ export function CurrencyInput({
             readOnly={isEditMode}
             aria-readonly={isEditMode}
             aria-invalid={error}
+            min={typeof min === "number" ? min : undefined}
             {...props}
           />
           {error && (
