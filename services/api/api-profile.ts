@@ -60,8 +60,7 @@ export interface PaymentMethod {
  */
 export async function getUserProfile(): Promise<UserProfile> {
   try {
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`.toString(), {
+    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -85,8 +84,7 @@ export async function getUserProfile(): Promise<UserProfile> {
  */
 export async function updateBusinessHours(data: BusinessHours): Promise<{ success: boolean }> {
   try {
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/business-hours`.toString(), {
+    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/business-hours`, {
       method: "PUT",
       headers: {
         ...AUTH.getAuthHeader(),
@@ -112,8 +110,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
  */
 export async function getUserBalance(): Promise<{ balance: number; currency: string }> {
   try {
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`.toString(), {
+    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -137,8 +134,7 @@ export async function getUserBalance(): Promise<{ balance: number; currency: str
  */
 export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`.toString(), {
+    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`, {
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -157,14 +153,15 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   }
 }
 
-// Fix the fetch type error in addPaymentMethod function
+/**
+ * Add new payment method
+ */
 export async function addPaymentMethod(name: string, instructions: string): Promise<PaymentMethod> {
   try {
     const requestBody = { name, instructions }
     console.log("Payment Method API - Request Body:", JSON.stringify(requestBody, null, 2))
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`.toString(), {
+    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`, {
       method: "POST",
       headers: {
         ...AUTH.getAuthHeader(),
@@ -191,11 +188,12 @@ export async function addPaymentMethod(name: string, instructions: string): Prom
   }
 }
 
-// Fix the fetch type error in deletePaymentMethod function
+/**
+ * Delete payment method
+ */
 export async function deletePaymentMethod(id: string): Promise<{ success: boolean }> {
   try {
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods/${id}`.toString(), {
+    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods/${id}`, {
       method: "DELETE",
       headers: {
         ...AUTH.getAuthHeader(),
@@ -215,11 +213,12 @@ export async function deletePaymentMethod(id: string): Promise<{ success: boolea
   }
 }
 
-// Fix the fetch type error in toggleRealNameVisibility function
+/**
+ * Toggle real name visibility
+ */
 export async function toggleRealNameVisibility(show: boolean): Promise<{ success: boolean }> {
   try {
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`.toString(), {
+    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
       method: "PUT",
       headers: {
         ...AUTH.getAuthHeader(),

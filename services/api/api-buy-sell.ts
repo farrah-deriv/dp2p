@@ -71,11 +71,10 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     console.groupEnd()
 
     const startTime = performance.now()
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), { headers })
+    const response = await fetch(url, { headers })
     const endTime = performance.now()
 
-    // Rest of the function remains the same
+    // Log response details
     console.group("📥 GET Advertisements Response")
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -144,11 +143,10 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     console.groupEnd()
 
     const startTime = performance.now()
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), { headers })
+    const response = await fetch(url, { headers })
     const endTime = performance.now()
 
-    // Rest of the function remains the same
+    // Log response details
     console.group("📥 GET Advertiser By ID Response")
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -290,11 +288,10 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
     console.groupEnd()
 
     const startTime = performance.now()
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), { headers })
+    const response = await fetch(url, { headers })
     const endTime = performance.now()
 
-    // Rest of the function remains the same
+    // Log response details
     console.group("📥 GET Advertiser Ads Response")
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -366,15 +363,14 @@ export async function toggleFavouriteAdvertiser(
     console.groupEnd()
 
     const startTime = performance.now()
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method,
       headers,
       body,
     })
     const endTime = performance.now()
 
-    // Rest of the function remains the same
+    // Log response details
     console.group(`📥 ${method} Favourite Advertiser Response`)
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -456,15 +452,14 @@ export async function toggleBlockAdvertiser(
     console.groupEnd()
 
     const startTime = performance.now()
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method,
       headers,
       body,
     })
     const endTime = performance.now()
 
-    // Rest of the function remains the same
+    // Log response details
     console.group(`📥 ${method} Block Advertiser Response`)
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)

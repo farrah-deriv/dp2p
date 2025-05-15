@@ -54,7 +54,6 @@ export interface ChatMessage {
   isRead: boolean
 }
 
-// Fix the fetch type error in getOrders function
 export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
   try {
     const queryParams = new URLSearchParams()
@@ -73,8 +72,7 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
       "Content-Type": "application/json",
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), { headers })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       throw new Error(`Error fetching orders: ${response.statusText}`)
@@ -95,7 +93,6 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
   }
 }
 
-// Fix the fetch type error in getOrderById function
 export async function getOrderById(id: string): Promise<Order> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${id}`
@@ -104,8 +101,7 @@ export async function getOrderById(id: string): Promise<Order> {
       "Content-Type": "application/json",
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), { headers })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       throw new Error(`Error fetching order: ${response.statusText}`)
@@ -126,7 +122,6 @@ export async function getOrderById(id: string): Promise<Order> {
   }
 }
 
-// Fix the fetch type error in markPaymentAsSent function
 export async function markPaymentAsSent(orderId: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/payment-sent`
@@ -135,8 +130,7 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
       "Content-Type": "application/json",
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
     })
@@ -160,7 +154,6 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
   }
 }
 
-// Fix the fetch type error in releasePayment function
 export async function releasePayment(orderId: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/release`
@@ -169,8 +162,7 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
       "Content-Type": "application/json",
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
     })
@@ -194,7 +186,6 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
   }
 }
 
-// Fix the fetch type error in cancelOrder function
 export async function cancelOrder(orderId: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/cancel`
@@ -203,8 +194,7 @@ export async function cancelOrder(orderId: string): Promise<{ success: boolean }
       "Content-Type": "application/json",
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
     })
@@ -228,7 +218,6 @@ export async function cancelOrder(orderId: string): Promise<{ success: boolean }
   }
 }
 
-// Fix the fetch type error in disputeOrder function
 export async function disputeOrder(orderId: string, reason: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/dispute`
@@ -238,8 +227,7 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
     }
     const body = JSON.stringify({ reason })
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
       body,
@@ -264,7 +252,6 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
   }
 }
 
-// Fix the fetch type error in createOrder function
 export async function createOrder(advertId: number, amount: number): Promise<Order> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}`
@@ -280,8 +267,7 @@ export async function createOrder(advertId: number, amount: number): Promise<Ord
       },
     })
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
       body,
@@ -306,7 +292,6 @@ export async function createOrder(advertId: number, amount: number): Promise<Ord
   }
 }
 
-// Fix the fetch type error in payOrder function
 export async function payOrder(orderId: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/pay`
@@ -315,8 +300,7 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
       "Content-Type": "application/json",
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
     })
@@ -340,7 +324,6 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
   }
 }
 
-// Fix the fetch type error in reviewOrder function
 export async function reviewOrder(
   orderId: string,
   reviewData: ReviewData,
@@ -358,8 +341,7 @@ export async function reviewOrder(
       },
     })
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
       body,
@@ -384,7 +366,6 @@ export async function reviewOrder(
   }
 }
 
-// Fix the fetch type error in completeOrder function
 export async function completeOrder(orderId: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/complete`
@@ -393,8 +374,7 @@ export async function completeOrder(orderId: string): Promise<{ success: boolean
       "Content-Type": "application/json",
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
     })
@@ -418,7 +398,6 @@ export async function completeOrder(orderId: string): Promise<{ success: boolean
   }
 }
 
-// Fix the fetch type error in sendChatMessage function
 export async function sendChatMessage(
   orderId: string,
   message: string,
@@ -444,8 +423,7 @@ export async function sendChatMessage(
       })
     }
 
-    // Fix the fetch call by ensuring URL is a string
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: "POST",
       headers,
       body,
