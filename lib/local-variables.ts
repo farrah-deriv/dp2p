@@ -1,5 +1,5 @@
 export const USER = {
-  id: process.env.NEXT_PUBLIC_USER_ID,
+  id: process.env.NEXT_PUBLIC_USER_ID ?? "",
   nickname: process.env.NEXT_PUBLIC_USER_NICKNAME,
   token: process.env.NEXT_PUBLIC_USER,
 }
