@@ -101,7 +101,7 @@ const statusIndicatorVariants = cva("inline-flex items-center gap-2 text-black",
 
 export interface StatusIndicatorProps
   extends React.HTMLAttributes<HTMLSpanElement>,
-  VariantProps<typeof statusIndicatorVariants> { }
+    VariantProps<typeof statusIndicatorVariants> {}
 
 function StatusIndicator({ className, variant, size, withDot, ...props }: StatusIndicatorProps) {
   return <span className={cn(statusIndicatorVariants({ variant, size, withDot, className }))} {...props} />

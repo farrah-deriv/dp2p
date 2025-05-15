@@ -112,13 +112,15 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div
-        className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${isOpen && isAnimating ? "opacity-100" : "opacity-0"
-          }`}
+        className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${
+          isOpen && isAnimating ? "opacity-100" : "opacity-0"
+        }`}
         onClick={handleClose}
       />
       <div
-        className={`relative w-full max-w-md bg-white h-full overflow-y-auto transform transition-transform duration-300 ease-in-out ${isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`relative w-full max-w-md bg-white h-full overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+          isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         {ad && (
           <div className="flex flex-col h-full">
@@ -131,12 +133,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             <div className="p-4 bg-gray-50 m-4 rounded-lg">
               <div className="mb-2">
                 <div className="flex items-center justify-between">
-                  <Input
-                    type="number"
-                    value={amount}
-                    onChange={handleAmountChange}
-                    placeholder="Enter amount"
-                  />
+                  <Input type="number" value={amount} onChange={handleAmountChange} placeholder="Enter amount" />
                   <span className="text-gray-500 hidden">{ad.account_currency}</span>
                 </div>
               </div>
@@ -180,12 +177,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                 {ad.payment_method_names?.map((method, index) => (
                   <div key={index} className="flex items-center">
                     <div
-                      className={`h-4 w-4 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                        ? "bg-green-500"
-                        : method.toLowerCase().includes("wallet") || method.toLowerCase().includes("ewallet")
-                          ? "bg-blue-500"
-                          : "bg-yellow-500"
-                        }`}
+                      className={`h-4 w-4 rounded-full mr-2 ${
+                        method.toLowerCase().includes("bank")
+                          ? "bg-green-500"
+                          : method.toLowerCase().includes("wallet") || method.toLowerCase().includes("ewallet")
+                            ? "bg-blue-500"
+                            : "bg-yellow-500"
+                      }`}
                     />
                     <span className="font-medium">
                       {method.toLowerCase().includes("bank")

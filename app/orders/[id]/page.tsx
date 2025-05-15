@@ -224,9 +224,30 @@ export default function OrderDetailsPage() {
 
   // Safely access user properties
   const counterpartyNickname = order.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
-  const counterpartyLabel = order.type === "buy" ? (order.user.id == USER.id ? "Seller" : "Buyer") : (order.user.id == USER.id ? "Buyer" : "Seller")
-  const pendingReleaseLabel = order.type === "buy" ? (order.user.id == USER.id ? "Waiting seller's confirmation" : "Confirm payment") : (order.user.id == USER.id ? "Confirm payment" : "Waiting seller's confirmation")
-  const youPayReceiveLabel = order.type === "buy" ? (order.user.id == USER.id ? "You receive" : "You pay") : (order.user.id == USER.id ? "You pay" : "You receive")
+  const counterpartyLabel =
+    order.type === "buy"
+      ? order.user.id == USER.id
+        ? "Seller"
+        : "Buyer"
+      : order.user.id == USER.id
+        ? "Buyer"
+        : "Seller"
+  const pendingReleaseLabel =
+    order.type === "buy"
+      ? order.user.id == USER.id
+        ? "Waiting seller's confirmation"
+        : "Confirm payment"
+      : order.user.id == USER.id
+        ? "Confirm payment"
+        : "Waiting seller's confirmation"
+  const youPayReceiveLabel =
+    order.type === "buy"
+      ? order.user.id == USER.id
+        ? "You receive"
+        : "You pay"
+      : order.user.id == USER.id
+        ? "You pay"
+        : "You receive"
 
   const orderAmount = Number(order.amount).toFixed(2)
 
@@ -254,9 +275,7 @@ export default function OrderDetailsPage() {
               {order.status === "pending_release" && (
                 <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg">
                   <div className="flex items-center">
-                    <span className="text-blue-600 font-medium">
-                      {pendingReleaseLabel}
-                    </span>
+                    <span className="text-blue-600 font-medium">{pendingReleaseLabel}</span>
                   </div>
                   <div className="flex items-center text-blue-600">
                     <Clock className="h-4 w-4 mr-1" />
@@ -328,7 +347,8 @@ export default function OrderDetailsPage() {
                 </TabsContent>
               </Tabs>
 
-              {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) || (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
+              {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
+                (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
                 <div className="p-4 flex gap-4">
                   <Button
                     variant="outline"
@@ -350,7 +370,8 @@ export default function OrderDetailsPage() {
                   </Button>
                 </div>
               )}
-              {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) || (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
+              {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
+                (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
                 <div className="p-4 flex gap-4">
                   <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
                     {isConfirmLoading ? (

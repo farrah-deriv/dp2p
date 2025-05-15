@@ -257,7 +257,7 @@ export default function StatsTabs({ children, stats: initialStats }: StatsTabsPr
 
           <TabsContent value="ads">
             <div className="p-4 border rounded-lg">
-              <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
+              <h3 className="text-lg font-medium mb-4">Advertisers Instructions</h3>
               <p className="text-slate-500">Your ad details will appear here.</p>
             </div>
           </TabsContent>

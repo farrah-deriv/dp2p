@@ -12,8 +12,9 @@ export default function MobileFooterNav() {
       <div className="grid grid-cols-5 h-16">
         <Link
           href="/"
-          className={`flex flex-col items-center justify-center ${pathname === "/" || pathname.startsWith("/advertiser") ? "text-[#00D0FF] font-bold" : "text-slate-700"
-            }`}
+          className={`flex flex-col items-center justify-center ${
+            pathname === "/" || pathname.startsWith("/advertiser") ? "text-[#00D0FF] font-bold" : "text-slate-700"
+          }`}
         >
           <Image
             src="/icons/buy-sell-icon.png"
@@ -26,8 +27,8 @@ export default function MobileFooterNav() {
             style={
               pathname === "/"
                 ? {
-                  filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                }
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                  }
                 : {}
             }
           />
@@ -35,8 +36,9 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/orders"
-          className={`flex flex-col items-center justify-center ${pathname.startsWith("/orders") ? "text-[#00D0FF] font-bold" : "text-slate-700"
-            }`}
+          className={`flex flex-col items-center justify-center ${
+            pathname.startsWith("/orders") ? "text-[#00D0FF] font-bold" : "text-slate-700"
+          }`}
         >
           <Image
             src="/icons/orders-icon.png"
@@ -47,8 +49,8 @@ export default function MobileFooterNav() {
             style={
               pathname.startsWith("/orders")
                 ? {
-                  filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                }
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                  }
                 : {}
             }
           />
@@ -56,8 +58,9 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/my-ads"
-          className={`flex flex-col items-center justify-center ${pathname.startsWith("/my-ads") ? "text-[#00D0FF] font-bold" : "text-slate-700"
-            }`}
+          className={`flex flex-col items-center justify-center ${
+            pathname.startsWith("/my-ads") ? "text-[#00D0FF] font-bold" : "text-slate-700"
+          }`}
         >
           <Image
             src="/icons/my-ads-icon.png"
@@ -68,8 +71,8 @@ export default function MobileFooterNav() {
             style={
               pathname.startsWith("/my-ads")
                 ? {
-                  filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                }
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                  }
                 : {}
             }
           />
@@ -77,8 +80,9 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/wallet"
-          className={`flex flex-col items-center justify-center ${pathname.startsWith("/wallet") ? "text-[#00D0FF] font-bold" : "text-slate-700"
-            }`}
+          className={`flex flex-col items-center justify-center ${
+            pathname.startsWith("/wallet") ? "text-[#00D0FF] font-bold" : "text-slate-700"
+          }`}
         >
           <Image
             src="/icons/wallet-icon.png"
@@ -89,8 +93,8 @@ export default function MobileFooterNav() {
             style={
               pathname.startsWith("/wallet")
                 ? {
-                  filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                }
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                  }
                 : {}
             }
           />
@@ -98,8 +102,9 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/profile"
-          className={`flex flex-col items-center justify-center ${pathname.startsWith("/profile") ? "text-[#00D0FF] font-bold" : "text-slate-700"
-            }`}
+          className={`flex flex-col items-center justify-center ${
+            pathname.startsWith("/profile") ? "text-[#00D0FF] font-bold" : "text-slate-700"
+          }`}
         >
           <Image
             src="/icons/profile-icon.png"
@@ -110,8 +115,8 @@ export default function MobileFooterNav() {
             style={
               pathname.startsWith("/profile")
                 ? {
-                  filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                }
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                  }
                 : {}
             }
           />
@@ -121,4 +126,3 @@ export default function MobileFooterNav() {
     </div>
   )
 }
-

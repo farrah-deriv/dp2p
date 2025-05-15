@@ -546,12 +546,13 @@ export default function AdvertiserProfilePage() {
                         {ad.payment_method_names?.map((method, index) => (
                           <div key={index} className="flex items-center">
                             <div
-                              className={`h-2 w-2 rounded-full mr-1 ${method.toLowerCase().includes("bank")
-                                ? "bg-green-500"
-                                : method.toLowerCase().includes("skrill")
-                                  ? "bg-blue-500"
-                                  : "bg-yellow-500"
-                                }`}
+                              className={`h-2 w-2 rounded-full mr-1 ${
+                                method.toLowerCase().includes("bank")
+                                  ? "bg-green-500"
+                                  : method.toLowerCase().includes("skrill")
+                                    ? "bg-blue-500"
+                                    : "bg-yellow-500"
+                              }`}
                             ></div>
                             <span className="text-sm">{method}</span>
                           </div>
@@ -605,12 +606,13 @@ export default function AdvertiserProfilePage() {
                               {ad.payment_method_names?.map((method, index) => (
                                 <div key={index} className="flex items-center">
                                   <div
-                                    className={`h-2 w-2 rounded-full mr-1 ${method.toLowerCase().includes("bank")
-                                      ? "bg-green-500"
-                                      : method.toLowerCase().includes("skrill")
-                                        ? "bg-blue-500"
-                                        : "bg-yellow-500"
-                                      }`}
+                                    className={`h-2 w-2 rounded-full mr-1 ${
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-green-500"
+                                        : method.toLowerCase().includes("skrill")
+                                          ? "bg-blue-500"
+                                          : "bg-yellow-500"
+                                    }`}
                                   ></div>
                                   <span className="text-sm">{method}</span>
                                 </div>

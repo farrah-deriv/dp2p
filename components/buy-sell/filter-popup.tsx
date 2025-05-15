@@ -60,4 +60,3 @@ export default function FilterPopup({ isOpen, onClose, onApply, initialFilters }
     </div>
   )
 }
-

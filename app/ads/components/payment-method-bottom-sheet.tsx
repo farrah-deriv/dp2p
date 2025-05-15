@@ -184,12 +184,13 @@ export default function PaymentMethodBottomSheet({
                   disabled={!isMethodSelected(method) && isMaxReached}
                 >
                   <div
-                    className={`w-10 h-10 flex items-center justify-center rounded-md border ${isMethodSelected(method)
-                      ? "bg-primary border-primary"
-                      : isMaxReached
-                        ? "border-gray-200 bg-gray-100"
-                        : "border-gray-200"
-                      }`}
+                    className={`w-10 h-10 flex items-center justify-center rounded-md border ${
+                      isMethodSelected(method)
+                        ? "bg-primary border-primary"
+                        : isMaxReached
+                          ? "border-gray-200 bg-gray-100"
+                          : "border-gray-200"
+                    }`}
                   >
                     {isMethodSelected(method) && <Check className="h-6 w-6 text-white" />}
                   </div>
@@ -234,4 +235,3 @@ export default function PaymentMethodBottomSheet({
     </div>
   )
 }
-

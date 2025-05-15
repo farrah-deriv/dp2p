@@ -17,8 +17,9 @@ export default function StatusModal({ type, title, message, subMessage, onClose 
         <div className="relative p-6">
           <div className="flex justify-center mb-12">
             <div
-              className={`${type === "success" ? "bg-success-bg" : "bg-warning-bg"
-                } rounded-full p-2 flex items-center justify-center`}
+              className={`${
+                type === "success" ? "bg-success-bg" : "bg-warning-bg"
+              } rounded-full p-2 flex items-center justify-center`}
             >
               {type === "success" ? (
                 <CheckCircle className="h-8 w-8 text-success-icon" />
@@ -53,4 +54,3 @@ export default function StatusModal({ type, title, message, subMessage, onClose 
     </AlertDialog>
   )
 }
-
