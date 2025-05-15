@@ -168,7 +168,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
         adData.payment_method_names = [String(adData.payment_method_names)]
       } else {
         // If it is an array, ensure all elements are strings
-        adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
+        adData.payment_method_names = adData.payment_method_names.map((method: string) => String(method))
       }
     } else {
       // If it's undefined or null, set it to an empty array
