@@ -54,7 +54,8 @@ export default function ProfilePage() {
         const userId = USER.id
         const url = `${API.baseUrl}/users/${userId}`
 
-        const response = await fetch(url, {
+        // Fix the fetch call by ensuring URL is a string
+        const response = await fetch(url.toString(), {
           headers: {
             ...AUTH.getAuthHeader(),
             accept: "application/json",

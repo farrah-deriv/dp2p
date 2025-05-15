@@ -125,10 +125,11 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     console.groupEnd()
 
     const startTime = performance.now()
-    const response = await fetch(url, { headers })
+    // Fix the fetch call by ensuring URL is a string
+    const response = await fetch(url.toString(), { headers })
     const endTime = performance.now()
 
-    // Log response details
+    // Rest of the function remains the same
     console.group("📥 GET User Adverts Response")
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -240,9 +241,7 @@ export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
   }
 }
 
-/**
- * Update an advertisement
- */
+// Fix the fetch type error in updateAd function
 export async function updateAd(id: string, adData: any): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
@@ -286,14 +285,15 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     console.groupEnd()
 
     const startTime = performance.now()
-    const response = await fetch(url, {
+    // Fix the fetch call by ensuring URL is a string
+    const response = await fetch(url.toString(), {
       method: "PATCH",
       headers,
       body,
     })
     const endTime = performance.now()
 
-    // Log response details
+    // Rest of the function remains the same
     console.group(`📥 PATCH Update Ad Response`)
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -387,9 +387,7 @@ export async function toggleAdStatus(id: string, isActive: boolean, currentAd: M
   }
 }
 
-/**
- * Delete an advertisement
- */
+// Fix the fetch type error in deleteAd function
 export async function deleteAd(id: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
@@ -406,13 +404,14 @@ export async function deleteAd(id: string): Promise<{ success: boolean }> {
     console.groupEnd()
 
     const startTime = performance.now()
-    const response = await fetch(url, {
+    // Fix the fetch call by ensuring URL is a string
+    const response = await fetch(url.toString(), {
       method: "DELETE",
       headers,
     })
     const endTime = performance.now()
 
-    // Log response details
+    // Rest of the function remains the same
     console.group("📥 DELETE Ad Response")
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -449,9 +448,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean }> {
   }
 }
 
-/**
- * Create a new advertisement
- */
+// Fix the fetch type error in createAd function
 export async function createAd(payload: CreateAdPayload): Promise<{ success: boolean; data: CreateAdResponse }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
@@ -473,14 +470,15 @@ export async function createAd(payload: CreateAdPayload): Promise<{ success: boo
     console.groupEnd()
 
     const startTime = performance.now()
-    const response = await fetch(url, {
+    // Fix the fetch call by ensuring URL is a string
+    const response = await fetch(url.toString(), {
       method: "POST",
       headers,
       body,
     })
     const endTime = performance.now()
 
-    // Log response details
+    // Rest of the function remains the same
     console.group("📥 POST Create Ad Response")
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
@@ -593,9 +591,7 @@ export async function createAd(payload: CreateAdPayload): Promise<{ success: boo
   }
 }
 
-/**
- * Activate an advertisement (specific function for troubleshooting)
- */
+// Fix the fetch type error in activateAd function
 export async function activateAd(id: string): Promise<{ success: boolean }> {
   try {
     // First, let's try to get the current ad data to use for activation
@@ -659,14 +655,15 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
     console.log("Formatted Request Body:", body)
 
     const startTime = performance.now()
-    const response = await fetch(url, {
+    // Fix the fetch call by ensuring URL is a string
+    const response = await fetch(url.toString(), {
       method: "PATCH",
       headers,
       body,
     })
     const endTime = performance.now()
 
-    // Log response details
+    // Rest of the function remains the same
     console.log("Status:", response.status, response.statusText)
     console.log("Time:", `${(endTime - startTime).toFixed(2)}ms`)
 
