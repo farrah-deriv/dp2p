@@ -119,9 +119,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
  */
 export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
   try {
-    console.group("🔍 Filter My Ads")
-    console.log("Filters:", filters)
-
     const userAdverts = await getUserAdverts()
     console.log("Total ads before filtering:", userAdverts.length)
 
