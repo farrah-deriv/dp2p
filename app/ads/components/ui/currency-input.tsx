@@ -42,8 +42,6 @@ export function CurrencyInput({
   const getMinValue = () => {
     if (typeof min === "number") {
       return min
-    } else if (typeof min === "string") {
-      return Number.parseFloat(min) || undefined
     } else if (typeof min === "object" && min !== null && "min" in min) {
       return min.min
     }
