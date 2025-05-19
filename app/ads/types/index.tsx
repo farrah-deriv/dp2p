@@ -8,8 +8,8 @@ export interface MyAd {
   }
   limits:
     | {
-        min: number | string
-        max: number | string
+        min: string
+        max: string
         currency: string
       }
     | string
