@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
 import { ArrowLeft, X } from "lucide-react"
 import BalanceInfoPopup from "@/components/balance-info-popup"
+import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
@@ -31,6 +32,11 @@ export default function Navigation({
     { name: "Profile", href: "/profile" },
   ]
 
+  const onToggleUser = (value: string) => {
+    localStorage.setItem("test_user", value);
+    window.location.reload();
+  }
+
   return (
     <div className="mb-4 md:pt-16">
       <div className="flex items-center justify-between md:my-3 p-4 -mx-4 md:-mx-0 md:px-0 border-b md:border-none">
@@ -47,6 +53,10 @@ export default function Navigation({
             </Link>
           </>
         )}
+        <ToggleGroup defaultValue={localStorage.getItem("test_user") ?? "seller"} type="single" onValueChange={onToggleUser}>
+          <ToggleGroupItem value="buyer">Buyer</ToggleGroupItem>
+          <ToggleGroupItem value="seller">Seller</ToggleGroupItem>
+        </ToggleGroup>
       </div>
       <div className="hidden md:block flex items-center justify-between mb-6">
         {isVisible && (

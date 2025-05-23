@@ -1,7 +1,13 @@
+const testUser = localStorage.getItem("test_user") ?? "seller";
+const isSeller = testUser === "seller";
+const buyerId = localStorage.getItem("test_id");
+const buyerNickname = localStorage.getItem("test_nickname");
+const buyerToken = localStorage.getItem("test_token");
+
 export const USER = {
-  id: process.env.NEXT_PUBLIC_USER_ID,
-  nickname: process.env.NEXT_PUBLIC_USER_NICKNAME,
-  token: process.env.NEXT_PUBLIC_USER_TOKEN,
+  id: isSeller ? process.env.NEXT_PUBLIC_USER_ID : buyerId,
+  nickname: isSeller ? process.env.NEXT_PUBLIC_USER_NICKNAME : buyerNickname,
+  token: isSeller ? process.env.NEXT_PUBLIC_USER_TOKEN : buyerToken,
 }
 
 export const API = {
