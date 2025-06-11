@@ -18,7 +18,7 @@ async function fetchSubscriberHash() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: USER.token ? `Bearer ${USER.token}` : "",
+        Authorization: `Bearer ${USER.token}`,
       },
     })
 
