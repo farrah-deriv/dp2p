@@ -15,7 +15,7 @@ async function fetchSubscriberHash() {
             method: "POST",
             headers: {
              'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvdHAiLCJ0aW1lc3RhbXAiOjE3NDk2MTYzNzB9XSwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sImF1ZCI6ImF1dGhlbnRpY2F0ZWQiLCJjbGllbnRfaWQiOjQ0MSwiZW1haWwiOiJlcm5lc3RAZGVyaXYuY29tIiwiZXhwIjoxNzQ5NzAyNzcwLCJpYXQiOjE3NDk2MTYzNzAsImlzX2Fub255bW91cyI6ZmFsc2UsInBob25lIjoiIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzZXNzaW9uX2lkIjoiM2YyNTU2YWUtMDJjZi00ODhmLWExMGItZDVlNTQzZDU1MDg2Iiwic3ViIjoiM2JiZTQwMmItMGRkZi00MmY5LTgzMjUtNWE0MDg4NjU2MDBjIiwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6ImVybmVzdEBkZXJpdi5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiM2JiZTQwMmItMGRkZi00MmY5LTgzMjUtNWE0MDg4NjU2MDBjIn19.MqmulnXoGjZttMJ-jKWuavbS4gkL83PsqG1ygL8MkhU'
+    'Authorization': 'Bearer ${USER.token}'
             },
         })
 
