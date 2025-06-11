@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 // Function to fetch the subscriber hash
 async function fetchSubscriberHash() {
     try {
+    console.log(NOTIFICATIONS.subscriberHashUrl)
         const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
 
         const response = await fetch(url, {
