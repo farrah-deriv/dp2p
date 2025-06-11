@@ -10,6 +10,8 @@ async function fetchSubscriberHash() {
     try {
         const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
 
+        const url ='https://api-core.deriv.com/notifications/v1/hash';
+
         const response = await fetch(url, {
             method: "POST",
             headers: {
