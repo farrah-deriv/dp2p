@@ -8,9 +8,7 @@ import { useRouter } from "next/navigation"
 // Function to fetch the subscriber hash
 async function fetchSubscriberHash() {
     try {
-      //  const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
-
-        const url ='https://api-core.deriv.com/notifications/v1/hash';
+        const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
 
         const response = await fetch(url, {
             method: "POST",
