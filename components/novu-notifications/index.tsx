@@ -6,9 +6,9 @@ import { USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 
 // Function to fetch the subscriber hash
-async function fetchSubscriberHash(subscriberId: string) {
+async function fetchSubscriberHash() {
     try {
-        const url = `${NOTIFICATIONS.subscriberHashUrl}/${subscriberId}/hash`
+        const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
 
         const response = await fetch(url, {
             method: "POST",
@@ -22,7 +22,7 @@ async function fetchSubscriberHash(subscriberId: string) {
         }
 
         const data = await response.json()
-        return data.subscriberHash
+        return data.subscriber.subscriberHash
     } catch (error) {
         console.log(error)
         return null
@@ -71,7 +71,7 @@ export function NovuNotifications() {
             setIsLoading(true)
             setError(null)
             try {
-                const hash = await fetchSubscriberHash(subscriberId)
+                const hash = await fetchSubscriberHash()
                 setSubscriberHash(hash)
                 if (!hash) {
                     setError("Failed to retrieve subscriber hash")
