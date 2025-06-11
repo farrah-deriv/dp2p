@@ -8,14 +8,17 @@ import { useRouter } from "next/navigation"
 // Function to fetch the subscriber hash
 async function fetchSubscriberHash() {
   try {
-    console.log(NOTIFICATIONS.subscriberHashUrl)
     const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
+
+    if (!USER.token) {
+      throw new Error("No authentication token available")
+    }
 
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${USER.token}`,
+        Authorization: USER.token ? `Bearer ${USER.token}` : "",
       },
     })
 
