@@ -111,6 +111,14 @@ export function NovuNotifications() {
   }
 
 
+console.log("Passing to Inbox →", {
+  subscriberId,
+  subscriberHash,
+  applicationIdentifier,
+});
+
+
+
   return (
     <div style={{ position: "static" }}>
       <Inbox
