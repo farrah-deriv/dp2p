@@ -127,7 +127,7 @@ console.log("Passing to Inbox →", {
         //applicationIdentifier={applicationIdentifier}
         subscriber="18"
         //subscriber={subscriberId}
-        subscriberHash={subscriberHash}
+        //subscriberHash={subscriberHash}
         colorScheme="light"
         i18n={{
           poweredBy: "Notifications by",
