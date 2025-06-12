@@ -108,7 +108,8 @@ export function NovuNotifications() {
         <span className="sr-only">Notifications error</span>
       </div>
     )
-  }console.log(`Subscriber ID ${subscriberId}`);
+  }
+
 
   return (
     <div style={{ position: "static" }}>
