@@ -123,7 +123,7 @@ console.log("Passing to Inbox →", {
   return (
     <div style={{ position: "static" }}>
       <Inbox
-        applicationIdentifier="1atQvhQrjUok"
+        applicationIdentifier="l3sj_hsmgnxi"
         //applicationIdentifier={applicationIdentifier}
         subscriber="18"
         //subscriber={subscriberId}
