@@ -123,11 +123,9 @@ console.log("Passing to Inbox →", {
   return (
     <div style={{ position: "static" }}>
       <Inbox
-        applicationIdentifier="1atQvhQrjUok"
-        //applicationIdentifier={applicationIdentifier}
-        subscriber="18"
-        //subscriber={subscriberId}
-        //subscriberHash={subscriberHash}
+        applicationIdentifier={applicationIdentifier}
+        subscriber={subscriberId}
+        subscriberHash={subscriberHash}
         colorScheme="light"
         i18n={{
           poweredBy: "Notifications by",
