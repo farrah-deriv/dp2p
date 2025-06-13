@@ -8,8 +8,7 @@ if (typeof window !== "undefined") {
 }
 
 export const USER = {
-id:"18",
-  //id: USER_ID,
+  id: USER_ID,
   nickname: USER_DATA?.nickname,
   token: USER_TOKEN,
 }

@@ -124,7 +124,7 @@ console.log("Passing to Inbox →", {
     <div style={{ position: "static" }}>
       <Inbox
         applicationIdentifier={applicationIdentifier}
-        subscriber="uae_441"
+        subscriber={subscriberId}
         subscriberHash={subscriberHash}
         colorScheme="light"
         i18n={{
