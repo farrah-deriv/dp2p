@@ -22,7 +22,7 @@ export interface Advertisement {
   minimum_order_amount: string
   order_expiry_period: number
   payment_currency: string
-  payment_methods: string[] // Changed from payment_method_names to payment_methods
+  payment_method_names: string[]
   type: string
   user_rating_average?: number
 }
