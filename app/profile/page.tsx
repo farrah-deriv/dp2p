@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Navigation from "@/components/navigation"
 import UserInfo from "@/components/profile/user-info"
 import TradeLimits from "@/components/profile/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { API, AUTH } from "@/lib/local-variables"
+import { USER, API, AUTH } from "@/lib/local-variables"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({
@@ -50,15 +51,8 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Change to users/me endpoint
-        const url = `${API.baseUrl}/users/me`
-
-        console.log("=== USERS/ME API CALL ===")
-        console.log("Request URL:", url)
-        console.log("Request Headers:", {
-          ...AUTH.getAuthHeader(),
-          accept: "application/json",
-        })
+        const userId = USER.id
+        const url = `${API.baseUrl}/users/${userId}`
 
         const response = await fetch(url, {
           headers: {
@@ -67,26 +61,14 @@ export default function ProfilePage() {
           },
         })
 
-        console.log("Response Status:", response.status, response.statusText)
-        console.log("Response Headers:", Object.fromEntries(response.headers.entries()))
-
         if (!response.ok) {
           throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`)
         }
 
         const responseData = await response.json()
 
-        console.log("=== USERS/ME API RESPONSE ===")
-        console.log("Full Response:", JSON.stringify(responseData, null, 2))
-
-        // Store the full response in localStorage for debugging
-        localStorage.setItem("users_me_response", JSON.stringify(responseData))
-        console.log("Response stored in localStorage as 'users_me_response'")
-
         if (responseData && responseData.data) {
           const data = responseData.data
-          console.log("=== PROCESSING USER DATA ===")
-          console.log("User Data:", JSON.stringify(data, null, 2))
 
           const joinDate = new Date(data.created_at)
           const now = new Date()
@@ -102,8 +84,9 @@ export default function ProfilePage() {
             joinDateString = `Joined ${days} days ago`
           }
 
-          const processedUserData = {
-            username: data.nickname || "John_doe",
+          setUserData((prevData) => ({
+            ...prevData,
+            username: data.nickname || prevData.username,
             rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not rated yet",
             completionRate: `${data.completion_average_30day || 0}%`,
             joinDate: joinDateString,
@@ -118,18 +101,9 @@ export default function ProfilePage() {
               },
             },
             balance: data.balances?.USD?.amount || 0,
-          }
-
-          console.log("=== PROCESSED USER DATA ===")
-          console.log("Processed Data:", JSON.stringify(processedUserData, null, 2))
-
-          setUserData((prevData) => ({
-            ...prevData,
-            ...processedUserData,
           }))
         }
       } catch (error) {
-        console.error("=== USERS/ME API ERROR ===")
         console.error("Error fetching user data:", error)
       }
     }
