@@ -121,10 +121,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const token = getAuthToken()
     if (!token) throw new Error("No auth token found")
 
-    console.log("🔍 Fetching user data from /users/me")
-    console.log("📡 Request URL:", `${API.baseUrl}/users/me`)
-    console.log("🔑 Auth Token:", token ? `${token.substring(0, 20)}...` : "No token")
-
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       headers: {
@@ -134,38 +130,21 @@ export async function fetchUserIdAndStore(): Promise<void> {
       },
     })
 
-    console.log("📊 Response Status:", response.status)
-    console.log("📊 Response OK:", response.ok)
-
     if (!response.ok) {
-      console.error("❌ Response not OK:", response.statusText)
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
 
     const result = await response.json()
-    console.log("✅ Full API Response:", JSON.stringify(result, null, 2))
-
-    // Store the full response for debugging
-    localStorage.setItem("users_me_response", JSON.stringify(result))
+    console.log("users/me API response:", result)
 
     const userId = result?.data?.id
-    console.log("👤 Extracted User ID:", userId)
-    console.log("📋 User Data:", result?.data)
 
     if (userId) {
       localStorage.setItem("user_id", userId.toString())
       localStorage.setItem("user_data", JSON.stringify(result.data))
-      console.log("💾 Stored user_id in localStorage:", userId)
-      console.log("💾 Stored user_data in localStorage")
-    } else {
-      console.warn("⚠️ No user ID found in response")
     }
   } catch (error) {
-    console.error("❌ Error fetching user ID:", error)
-    console.error("❌ Error details:", {
-      message: error.message,
-      stack: error.stack,
-    })
+    console.error("Error fetching user ID:", error)
   }
 }
 
