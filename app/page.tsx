@@ -433,7 +433,7 @@ export default function BuySellPage() {
                     </div>
 
                     <div className="flex flex-wrap gap-2">
-                      {ad.payment_method_names?.map((method, index) => (
+                      {ad.payment_methods?.map((method, index) => (
                         <div key={index} className="flex items-center">
                           <div
                             className={`h-2 w-2 rounded-full mr-2 ${
@@ -537,7 +537,7 @@ export default function BuySellPage() {
                         </TableCell>
                         <TableCell className="py-4 px-4 sm:table-cell align-top">
                           <div className="flex flex-col flex-wrap gap-2">
-                            {ad.payment_method_names?.map((method, index) => (
+                            {ad.payment_methods?.map((method, index) => (
                               <div key={index} className="flex items-center">
                                 {method && (
                                   <div
