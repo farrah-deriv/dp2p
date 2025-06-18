@@ -1,14 +1,13 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { AlertCircle, ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
-import Navigation from "@/components/navigation"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
-import type { Advertisement } from "@/services/api/api-buy-sell"
+import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
 import { debounce } from "lodash"
 import FilterPopup, { type FilterOptions } from "@/components/buy-sell/filter-popup"
@@ -22,7 +21,6 @@ export default function BuySellPage() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
   const [currency, setCurrency] = useState("IDR")
-  const [paymentMethod, setPaymentMethod] = useState("All")
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("exchange_rate")
   const [adverts, setAdverts] = useState<Advertisement[]>([])
@@ -32,17 +30,34 @@ export default function BuySellPage() {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     fromFollowing: false,
   })
-  const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
-  const filterButtonRef = useRef<HTMLDivElement>(null)
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all") // Updated default value
+  const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
 
-  // Add state for order sidebar
+
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
   useEffect(() => {
     fetchAdverts()
-  }, [activeTab, currency, paymentMethod, sortBy, filterOptions])
+  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod])
+
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      setIsLoadingPaymentMethods(true)
+      try {
+        const methods = await BuySellAPI.getPaymentMethods()
+        setPaymentMethods(methods)
+      } catch (error) {
+        console.error("Error fetching payment methods:", error)
+      } finally {
+        setIsLoadingPaymentMethods(false)
+      }
+    }
+
+    fetchPaymentMethods()
+  }, [])
 
   // Update the fetchAdverts function to ensure adverts is always an array
   const fetchAdverts = async (query = null) => {
@@ -52,21 +67,16 @@ export default function BuySellPage() {
       const params: BuySellAPI.SearchParams = {
         type: activeTab,
         currency: currency,
-        paymentMethod: paymentMethod !== "All" ? paymentMethod : undefined,
+        paymentMethod: selectedPaymentMethod || undefined,
         nickname: query !== null ? query : searchQuery,
         sortBy: sortBy,
       }
 
-      // Apply additional filters
       if (filterOptions.fromFollowing) {
-        // Use favourites_only: 1 parameter for the API
         params.favourites_only = 1
       }
-      // Note: withinLimits would typically be handled by the backend
 
       const data = await BuySellAPI.getAdvertisements(params)
-
-      // Ensure data is an array before setting it
       if (Array.isArray(data)) {
         setAdverts(data)
       } else {
@@ -87,7 +97,7 @@ export default function BuySellPage() {
     debounce(() => {
       fetchAdverts()
     }, 300),
-    [activeTab, currency, paymentMethod, sortBy, filterOptions, searchQuery],
+    [activeTab, currency, sortBy, filterOptions, searchQuery, selectedPaymentMethod],
   )
 
   const handleAdvertiserClick = (userId: number) => {
@@ -118,20 +128,13 @@ export default function BuySellPage() {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden px-4">
-      {/* Fixed Header Section */}
       <div className="flex-shrink-0">
-        {/* Desktop Navigation */}
-        {!isSearchOpen && <Navigation title="P2P Wallet" />}
-
-        {/* Buy/Sell Toggle and Filters - Fixed */}
-        <div className="mb-4 md:mb-6 md:flex justify-between items-center">
+        <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
           {!isSearchOpen && (
             <div className="flex flex-row justify-between items-center gap-4">
-              {/* Buy/Sell Toggle */}
               <Tabs
                 defaultValue={activeTab}
                 onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
-                className="w-full"
               >
                 <TabsList className="w-full md:min-w-3xs">
                   <TabsTrigger className="w-full md:w-auto" value="sell">
@@ -144,8 +147,6 @@ export default function BuySellPage() {
               </Tabs>
             </div>
           )}
-
-          {/* Responsive Filters Row */}
           <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
             {!isSearchOpen && (
               <Select value={currency} onValueChange={setCurrency}>
@@ -160,7 +161,25 @@ export default function BuySellPage() {
                 </SelectContent>
               </Select>
             )}
-
+            <div className="hidden md:block">
+              <Select
+                value={selectedPaymentMethod}
+                onValueChange={setSelectedPaymentMethod}
+                disabled={isLoadingPaymentMethods}
+              >
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All payment methods</SelectItem>
+                  {paymentMethods.map((method) => (
+                    <SelectItem key={method.method} value={method.method}>
+                      {method.display_name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             <div className="hidden md:block relative flex-grow w-full sm:w-auto sm:max-w-md">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">
                 <Image
@@ -190,7 +209,6 @@ export default function BuySellPage() {
                 }}
               />
             </div>
-
             {!isSearchOpen && (
               <button
                 className="md:hidden border rounded-md p-1 flex-shrink-0"
@@ -291,9 +309,7 @@ export default function BuySellPage() {
         </div>
       </div>
 
-      {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
-        {/* Advertisers List */}
         <div>
           {isLoading ? (
             <div className="text-center py-12">
@@ -340,7 +356,6 @@ export default function BuySellPage() {
             </div>
           ) : (
             <>
-              {/* Mobile Card View */}
               <div className="md:hidden space-y-4">
                 {adverts.map((ad) => (
                   <div key={ad.id} className="border rounded-lg p-4 bg-white">
@@ -404,8 +419,8 @@ export default function BuySellPage() {
                     </div>
 
                     <div className="text-sm mb-2">
-                      Limits: {ad.account_currency} {ad.minimum_order_amount?.toFixed(2) || "N/A"} -{" "}
-                      {ad.actual_maximum_order_amount?.toFixed(2) || "N/A"}
+                      Limits: {ad.account_currency} {ad.minimum_order_amount || "N/A"} -{" "}
+                      {ad.actual_maximum_order_amount || "N/A"}
                     </div>
 
                     <div className="flex items-center text-xs text-slate-500 mb-3 mt-1">
@@ -423,7 +438,7 @@ export default function BuySellPage() {
 
                     <div className="flex justify-between items-center">
                       <div className="flex flex-wrap gap-2">
-                        {ad.payment_method_names?.map((method, index) => (
+                        {ad.payment_methods?.map((method, index) => (
                           <div key={index} className="flex items-center">
                             <div
                               className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
@@ -448,14 +463,12 @@ export default function BuySellPage() {
                 ))}
               </div>
 
-              {/* Desktop Table View */}
               <div className="hidden md:block">
                 <Table>
                   <TableHeader className="border-b sticky top-0 bg-white">
                     <TableRow className="text-sm">
                       <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
                       <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Order limits</TableHead>
                       <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
                         Payment methods
                       </TableHead>
@@ -465,7 +478,7 @@ export default function BuySellPage() {
                   <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
                       <TableRow key={ad.id}>
-                        <TableCell className="py-4 px-4">
+                        <TableCell className="py-4 px-4 align-top">
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xl mr-3">
                               {(ad.user?.nickname || "U").charAt(0).toUpperCase()}
@@ -501,17 +514,16 @@ export default function BuySellPage() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="py-4 px-4 font-bold">
-                          {ad.payment_currency}{" "}
-                          {ad.exchange_rate
-                            ? ad.exchange_rate.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                            : "N/A"}
-                        </TableCell>
-                        <TableCell className="py-4 px-4">
-                          <div>{`${ad.account_currency} ${ad.minimum_order_amount?.toFixed(2) || "N/A"} - ${ad.actual_maximum_order_amount?.toFixed(2) || "N/A"
+                        <TableCell className="py-4 px-4 align-top">
+                          <div className="font-bold">{ad.payment_currency}{" "}
+                            {ad.exchange_rate
+                              ? ad.exchange_rate.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
+                              : "N/A"}
+                          </div>
+                          <div>{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
                             }`}</div>
                           <div className="flex items-center text-xs text-slate-500 mt-1">
                             <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
@@ -526,9 +538,9 @@ export default function BuySellPage() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="py-4 px-4 sm:table-cell">
-                          <div className="flex flex-wrap gap-2">
-                            {ad.payment_method_names?.map((method, index) => (
+                        <TableCell className="py-4 px-4 sm:table-cell align-top">
+                          <div className="flex flex-col flex-wrap gap-2">
+                            {ad.payment_methods?.map((method, index) => (
                               <div key={index} className="flex items-center">
                                 {method && (
                                   <div
@@ -541,7 +553,7 @@ export default function BuySellPage() {
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell className="py-4 px-4 text-right">
+                        <TableCell className="py-4 px-4 text-right align-top">
                           {USER.id != ad.user.id && (
                             <Button
                               variant={ad.type === "buy" ? "destructive" : "secondary"}
