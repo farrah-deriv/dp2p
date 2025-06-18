@@ -432,28 +432,30 @@ export default function BuySellPage() {
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
-                      {ad.payment_method_names?.map((method, index) => (
-                        <div key={index} className="flex items-center">
-                          <div
-                            className={`h-2 w-2 rounded-full mr-2 ${
-                              method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                            }`}
-                          ></div>
-                          <span className="text-sm">{method}</span>
-                        </div>
-                      ))}
-                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="flex flex-wrap gap-2">
+                        {ad.payment_methods?.map((method, index) => (
+                          <div key={index} className="flex items-center">
+                            <div
+                              className={`h-2 w-2 rounded-full mr-2 ${
+                                method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                              }`}
+                            ></div>
+                            <span className="text-sm">{method}</span>
+                          </div>
+                        ))}
+                      </div>
 
-                    {USER.id != ad.user.id && (
-                      <Button
-                        size="sm"
-                        onClick={() => handleOrderClick(ad)}
-                        className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
-                      >
-                        {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
-                      </Button>
-                    )}
+                      {USER.id != ad.user.id && (
+                        <Button
+                          size="sm"
+                          onClick={() => handleOrderClick(ad)}
+                          className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
+                        >
+                          {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -537,7 +539,7 @@ export default function BuySellPage() {
                         </TableCell>
                         <TableCell className="py-4 px-4 sm:table-cell align-top">
                           <div className="flex flex-col flex-wrap gap-2">
-                            {ad.payment_method_names?.map((method, index) => (
+                            {ad.payment_methods?.map((method, index) => (
                               <div key={index} className="flex items-center">
                                 {method && (
                                   <div
