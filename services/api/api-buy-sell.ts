@@ -22,7 +22,7 @@ export interface Advertisement {
   minimum_order_amount: string
   order_expiry_period: number
   payment_currency: string
-  payment_method_names: string[]
+  payment_methods: string[]
   type: string
   user_rating_average?: number
 }
@@ -427,10 +427,8 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
       return data.data
     } else if (Array.isArray(data)) {
       return data
-    } else
-      return []
-  }
-  catch (error) {
+    } else return []
+  } catch (error) {
     // Return empty array on error to prevent map errors
     return []
   }
