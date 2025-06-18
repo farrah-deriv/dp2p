@@ -177,102 +177,8 @@ export default function BuySellPage() {
               </Select>
             </div>
             <div className="hidden md:block relative flex-grow w-full sm:w-auto sm:max-w-md">
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
-                  alt="Search"
-                  width={24}
-                  height={24}
-                />
-              </div>
-              <Input
-                className="pl-10 w-full"
-                placeholder="Enter nickname"
-                onChange={(e) => {
-                  const value = e.target.value
-                  setSearchQuery(value)
-                  if (value.trim() === "") {
-                    // If search is empty, fetch all adverts
-                    fetchAdverts("")
-                  } else {
-                    debouncedFetchAdverts()
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    fetchAdverts()
-                  }
-                }}
-              />
-            </div>
-            {!isSearchOpen && (
-              <button
-                className="md:hidden border rounded-md p-1 flex-shrink-0"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-              >
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
-                  alt="Search"
-                  width={24}
-                  height={24}
-                />
-              </button>
-            )}
-
-            <div className="hidden md:block">
-              <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-[200px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="exchange_rate">Sort by: Exchange rate</SelectItem>
-                  <SelectItem value="user_rating_average">Sort by: Rating</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="relative filter-dropdown-container flex-shrink-0">
-              {!isSearchOpen && (
-                <button
-                  onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
-                  className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <span className="text-sm hidden md:inline">Filter by</span>
-                  <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
-                    alt="Dropdown"
-                    width={15}
-                    height={15}
-                    className="h-4 w-4 opacity-70 md:inline"
-                  />
-                </button>
-              )}
-              {isFilterPopupOpen && (
-                <FilterPopup
-                  isOpen={isFilterPopupOpen}
-                  onClose={() => setIsFilterPopupOpen(false)}
-                  onApply={setFilterOptions}
-                  initialFilters={filterOptions}
-                />
-              )}
-            </div>
-          </div>
-
-          {/* Mobile Search Input (conditionally shown) */}
-          {isSearchOpen && (
-            <div className="md:hidden flex">
-              <div
-                href="/"
-                className="flex items-center text-slate-1400"
-                onClick={() => {
-                  setIsSearchOpen(false)
-                  setSearchQuery(null)
-                }}
-              >
-                <ArrowLeft className="h-5 w-5 mr-2" />
-              </div>
-              <div className="relative w-full">
-                <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-slate-400">
+              <div className="hidden md:block relative flex-grow w-full sm:w-auto sm:max-w-md">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">
                   <Image
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
                     alt="Search"
@@ -281,7 +187,7 @@ export default function BuySellPage() {
                   />
                 </div>
                 <Input
-                  className="pl-10 w-full focus:ring-0 focus:border-[#000000] focus:outline-none"
+                  className="pl-10 w-full"
                   placeholder="Enter nickname"
                   onChange={(e) => {
                     const value = e.target.value
@@ -300,288 +206,385 @@ export default function BuySellPage() {
                   }}
                 />
               </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
-        <div>
-          {isLoading ? (
-            <div className="text-center py-12">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-              <p className="mt-2 text-slate-600">Loading ads...</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-8">{error}</div>
-          ) : adverts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              {searchQuery ? (
-                <>
-                  <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="text-slate-400"
-                    >
-                      <path
-                        d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-medium text-slate-800 mb-2">No results for "{searchQuery}"</h3>
-                  <p className="text-slate-600 text-center">
-                    We couldn't find an advertiser with that nickname. Try a different name.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
-                    <AlertCircle className="h-8 w-8 text-slate-400" />
-                  </div>
-                  <p className="text-xl font-medium text-slate-800">No ads available.</p>
-                </>
+              {!isSearchOpen && (
+                <button
+                  className="md:hidden border rounded-md p-1 flex-shrink-0"
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                >
+                  <Image
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
+                    alt="Search"
+                    width={24}
+                    height={24}
+                  />
+                </button>
               )}
+
+              <div className="hidden md:block">
+                <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
+                  <SelectTrigger className="w-full sm:w-[200px]">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="exchange_rate">Sort by: Exchange rate</SelectItem>
+                    <SelectItem value="user_rating_average">Sort by: Rating</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="relative filter-dropdown-container flex-shrink-0">
+                {!isSearchOpen && (
+                  <button
+                    onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
+                    className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <span className="text-sm hidden md:inline">Filter by</span>
+                    <Image
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
+                      alt="Dropdown"
+                      width={15}
+                      height={15}
+                      className="h-4 w-4 opacity-70 md:inline"
+                    />
+                  </button>
+                )}
+                {isFilterPopupOpen && (
+                  <FilterPopup
+                    isOpen={isFilterPopupOpen}
+                    onClose={() => setIsFilterPopupOpen(false)}
+                    onApply={setFilterOptions}
+                    initialFilters={filterOptions}
+                  />
+                )}
+              </div>
             </div>
-          ) : (
-            <>
-              <div className="md:hidden space-y-4">
-                {adverts.map((ad) => (
-                  <div key={ad.id} className="border rounded-lg p-4 bg-white">
-                    <div className="flex items-center mb-3">
-                      <div className="h-8 w-8 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-2">
-                        {(ad.user?.nickname?.charAt(0) || "U").toUpperCase()}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center">
-                          <button
-                            onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                            className="font-medium hover:underline cursor-pointer"
-                          >
-                            {ad.user?.nickname || "Unknown"}
-                          </button>
-                          {ad.user?.is_favourite && (
-                            <span className="ml-2 px-2 py-0.5 border border-[#29823B] text-[#29823B]text-xs rounded-sm">
-                              Following
-                            </span>
-                          )}
+
+            {/* Mobile Search Input (conditionally shown) */}
+            {isSearchOpen && (
+              <div className="md:hidden flex">
+                <div
+                  href="/"
+                  className="flex items-center text-slate-1400"
+                  onClick={() => {
+                    setIsSearchOpen(false)
+                    setSearchQuery(null)
+                  }}
+                >
+                  <ArrowLeft className="h-5 w-5 mr-2" />
+                </div>
+                <div className="relative w-full">
+                  <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-slate-400">
+                    <Image
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
+                      alt="Search"
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  <Input
+                    className="pl-10 w-full focus:ring-0 focus:border-[#000000] focus:outline-none"
+                    placeholder="Enter nickname"
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setSearchQuery(value)
+                      if (value.trim() === "") {
+                        // If search is empty, fetch all adverts
+                        fetchAdverts("")
+                      } else {
+                        debouncedFetchAdverts()
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        fetchAdverts()
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
+          <div>
+            {isLoading ? (
+              <div className="text-center py-12">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+                <p className="mt-2 text-slate-600">Loading ads...</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-8">{error}</div>
+            ) : adverts.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16">
+                {searchQuery ? (
+                  <>
+                    <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="text-slate-400"
+                      >
+                        <path
+                          d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-medium text-slate-800 mb-2">No results for "{searchQuery}"</h3>
+                    <p className="text-slate-600 text-center">
+                      We couldn't find an advertiser with that nickname. Try a different name.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
+                      <AlertCircle className="h-8 w-8 text-slate-400" />
+                    </div>
+                    <p className="text-xl font-medium text-slate-800">No ads available.</p>
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="md:hidden space-y-4">
+                  {adverts.map((ad) => (
+                    <div key={ad.id} className="border rounded-lg p-4 bg-white">
+                      <div className="flex items-center mb-3">
+                        <div className="h-8 w-8 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-2">
+                          {(ad.user?.nickname?.charAt(0) || "U").toUpperCase()}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center">
+                            <button
+                              onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                              className="font-medium hover:underline cursor-pointer"
+                            >
+                              {ad.user?.nickname || "Unknown"}
+                            </button>
+                            {ad.user?.is_favourite && (
+                              <span className="ml-2 px-2 py-0.5 border border-[#29823B] text-[#29823B]text-xs rounded-sm">
+                                Following
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center text-xs text-slate-500 mb-2">
-                      {ad.user_rating_average && (
-                        <span className="flex items-center">
-                          <Image
-                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
-                            alt="Rating"
-                            width={16}
-                            height={16}
-                            className="mr-1"
-                          />
-                          <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
-                        </span>
-                      )}
-                      {ad.user.completed_orders_count > 0 && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{ad.user.completed_orders_count} orders</span>
-                        </>
-                      )}
+                      <div className="flex items-center text-xs text-slate-500 mb-2">
+                        {ad.user_rating_average && (
+                          <span className="flex items-center">
+                            <Image
+                              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
+                              alt="Rating"
+                              width={16}
+                              height={16}
+                              className="mr-1"
+                            />
+                            <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
+                          </span>
+                        )}
+                        {ad.user.completed_orders_count > 0 && (
+                          <>
+                            <span className="mx-2">•</span>
+                            <span>{ad.user.completed_orders_count} orders</span>
+                          </>
+                        )}
 
-                      {ad.user.completion_rate > 0 && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{ad.user.completion_rate}% completion</span>
-                        </>
-                      )}
-                    </div>
+                        {ad.user.completion_rate > 0 && (
+                          <>
+                            <span className="mx-2">•</span>
+                            <span>{ad.user.completion_rate}% completion</span>
+                          </>
+                        )}
+                      </div>
 
-                    <div className="text-lg font-bold mb-2">
-                      {ad.account_currency} 1.00 = {ad.payment_currency}{" "}
-                      {ad.exchange_rate
-                        ? ad.exchange_rate.toLocaleString(undefined, {
+                      <div className="text-lg font-bold mb-2">
+                        {ad.account_currency} 1.00 = {ad.payment_currency}{" "}
+                        {ad.exchange_rate
+                          ? ad.exchange_rate.toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })
-                        : "N/A"}
-                    </div>
-
-                    <div className="text-sm mb-2">
-                      Limits: {ad.account_currency} {ad.minimum_order_amount || "N/A"} -{" "}
-                      {ad.actual_maximum_order_amount || "N/A"}
-                    </div>
-
-                    <div className="flex items-center text-xs text-slate-500 mb-3 mt-1">
-                      <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
-                        <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
-                          alt="Clock"
-                          width={12}
-                          height={12}
-                          className="mr-1"
-                        />
-                        <span>{ad.order_expiry_period} min</span>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <div className="flex flex-wrap gap-2">
-                        {ad.payment_methods?.map((method, index) => (
-                          <div key={index} className="flex items-center">
-                            <div
-                              className={`h-2 w-2 rounded-full mr-2 ${
-                                method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                              }`}
-                            ></div>
-                            <span className="text-sm">{method}</span>
-                          </div>
-                        ))}
+                          : "N/A"}
                       </div>
 
-                      {USER.id != ad.user.id && (
-                        <Button
-                          size="sm"
-                          onClick={() => handleOrderClick(ad)}
-                          className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
-                        >
-                          {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                      <div className="text-sm mb-2">
+                        Limits: {ad.account_currency} {ad.minimum_order_amount || "N/A"} -{" "}
+                        {ad.actual_maximum_order_amount || "N/A"}
+                      </div>
 
-              <div className="hidden md:block">
-                <Table>
-                  <TableHeader className="border-b sticky top-0 bg-white">
-                    <TableRow className="text-sm">
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                        Payment methods
-                      </TableHead>
-                      <TableHead className="text-right py-4 px-4"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
-                    {adverts.map((ad) => (
-                      <TableRow key={ad.id}>
-                        <TableCell className="py-4 px-4 align-top">
-                          <div className="flex items-center">
-                            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xl mr-3">
-                              {(ad.user?.nickname || "U").charAt(0).toUpperCase()}
-                            </div>
-                            <div>
-                              <div className="flex items-center">
-                                <button
-                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                  className="hover:underline cursor-pointer"
-                                >
-                                  {ad.user?.nickname || "Unknown"}
-                                </button>
-                                {ad.user?.is_favourite && (
-                                  <span className="ml-2 px-2 py-0.5 border border-[#29823B]  text-[#29823B] text-xs rounded-sm">
-                                    Following
-                                  </span>
-                                )}
+                      <div className="flex items-center text-xs text-slate-500 mb-3 mt-1">
+                        <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
+                          <Image
+                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
+                            alt="Clock"
+                            width={12}
+                            height={12}
+                            className="mr-1"
+                          />
+                          <span>{ad.order_expiry_period} min</span>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <div className="flex flex-wrap gap-2">
+                          {ad.payment_methods?.map((method, index) => (
+                            {
+                              ad.payment_methods?.map((method, index) => (
+                                <div key={index} className="flex items-center">
+                                  <div
+                                    className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                                      }`}
+                                  ></div>
+                                  <span className="text-sm">{method}</span>
+                                </div>
+                              ))
+                            }
+                      </div>
+
+                        {USER.id != ad.user.id && (
+                          <Button
+                            size="sm"
+                            onClick={() => handleOrderClick(ad)}
+                            className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
+                          >
+                            {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="hidden md:block">
+                  <Table>
+                    <TableHeader className="border-b sticky top-0 bg-white">
+                      <TableRow className="text-sm">
+                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
+                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
+                        <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                          Payment methods
+                        </TableHead>
+                        <TableHead className="text-right py-4 px-4"></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
+                      {adverts.map((ad) => (
+                        <TableRow key={ad.id}>
+                          <TableCell className="py-4 px-4 align-top">
+                            <div className="flex items-center">
+                              <div className="h-10 w-10 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xl mr-3">
+                                {(ad.user?.nickname || "U").charAt(0).toUpperCase()}
                               </div>
-                              <div className="flex items-center text-xs sm:text-sm text-slate-500">
-                                {ad.user_rating_average && (
-                                  <span className="flex items-center">
-                                    <Image
-                                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
-                                      alt="Rating"
-                                      width={16}
-                                      height={16}
-                                      className="mr-1"
-                                    />
-                                    <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
-                                  </span>
-                                )}
+                              <div>
+                                <div className="flex items-center">
+                                  <button
+                                    onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                    className="hover:underline cursor-pointer"
+                                  >
+                                    {ad.user?.nickname || "Unknown"}
+                                  </button>
+                                  {ad.user?.is_favourite && (
+                                    <span className="ml-2 px-2 py-0.5 border border-[#29823B]  text-[#29823B] text-xs rounded-sm">
+                                      Following
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex items-center text-xs sm:text-sm text-slate-500">
+                                  {ad.user_rating_average && (
+                                    <span className="flex items-center">
+                                      <Image
+                                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
+                                        alt="Rating"
+                                        width={16}
+                                        height={16}
+                                        className="mr-1"
+                                      />
+                                      <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-4 px-4 align-top">
-                          <div className="font-bold">
-                            {ad.payment_currency}{" "}
-                            {ad.exchange_rate
-                              ? ad.exchange_rate.toLocaleString(undefined, {
+                          </TableCell>
+                          <TableCell className="py-4 px-4 align-top">
+                            <div className="font-bold">{ad.payment_currency}{" "}
+                              {ad.exchange_rate
+                                ? ad.exchange_rate.toLocaleString(undefined, {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })
-                              : "N/A"}
-                          </div>
-                          <div>{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
-                            ad.actual_maximum_order_amount || "N/A"
-                          }`}</div>
-                          <div className="flex items-center text-xs text-slate-500 mt-1">
-                            <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
-                              <Image
-                                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
-                                alt="Clock"
-                                width={12}
-                                height={12}
-                                className="mr-1"
-                              />
-                              <span>{ad.order_expiry_period} min</span>
+                                : "N/A"}
                             </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-4 px-4 sm:table-cell align-top">
-                          <div className="flex flex-col flex-wrap gap-2">
-                            {ad.payment_methods?.map((method, index) => (
-                              <div key={index} className="flex items-center">
-                                {method && (
-                                  <div
-                                    className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                                    }`}
-                                  ></div>
-                                )}
-                                <span className="text-sm">{method}</span>
+                            <div>{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
+                              }`}</div>
+                            <div className="flex items-center text-xs text-slate-500 mt-1">
+                              <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
+                                <Image
+                                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
+                                  alt="Clock"
+                                  width={12}
+                                  height={12}
+                                  className="mr-1"
+                                />
+                                <span>{ad.order_expiry_period} min</span>
                               </div>
-                            ))}
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-4 px-4 sm:table-cell align-top">
+                            <div className="flex flex-col flex-wrap gap-2">
+                              {ad.payment_methods?.map((method, index) => (
+                                {
+                                  ad.payment_methods?.map((method, index) => (
+                                    <div key={index} className="flex items-center">
+                                      {method && (
+                                        <div
+                                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                                            }`}
+                                        ></div>
+                                      )}
+                                      <span className="text-sm">{method}</span>
+                                    </div>
+                                  ))
+                                }
                           </div>
-                        </TableCell>
-                        <TableCell className="py-4 px-4 text-right align-top">
-                          {USER.id != ad.user.id && (
-                            <Button
-                              variant={ad.type === "buy" ? "destructive" : "secondary"}
-                              size="sm"
-                              onClick={() => handleOrderClick(ad)}
-                            >
-                              {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </>
-          )}
+                          </TableCell>
+                          <TableCell className="py-4 px-4 text-right align-top">
+                            {USER.id != ad.user.id && (
+                              <Button
+                                variant={ad.type === "buy" ? "destructive" : "secondary"}
+                                size="sm"
+                                onClick={() => handleOrderClick(ad)}
+                              >
+                                {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
+                              </Button>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </>
+            )}
+          </div>
         </div>
+        <div className="flex-shrink-0">
+          <MobileFooterNav />
+        </div>
+        <OrderSidebar
+          isOpen={isOrderSidebarOpen}
+          onClose={() => setIsOrderSidebarOpen(false)}
+          ad={selectedAd}
+          orderType={activeTab}
+        />
       </div>
-      <div className="flex-shrink-0">
-        <MobileFooterNav />
-      </div>
-      <OrderSidebar
-        isOpen={isOrderSidebarOpen}
-        onClose={() => setIsOrderSidebarOpen(false)}
-        ad={selectedAd}
-        orderType={activeTab}
-      />
-    </div>
-  )
+      )
 }
