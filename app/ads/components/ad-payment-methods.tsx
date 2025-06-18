@@ -23,11 +23,12 @@ const AdPaymentMethods = () => {
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
-        const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
+        const response = await fetch(`${API.baseUrl}${API.endpoints.userPaymentMethods}`, {
           headers: {
-            accept: "application/json",
             ...AUTH.getAuthHeader(),
+            "Content-Type": "application/json",
           },
+          cache: "no-store",
         })
         const responseData = await response.json()
 
@@ -67,10 +68,10 @@ const AdPaymentMethods = () => {
       const result = await addPaymentMethod(method, fields)
 
       if (result.success) {
-        const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
+        const response = await fetch(`${API.baseUrl}${API.endpoints.userPaymentMethods}`, {
           headers: {
-            accept: "application/json",
             ...AUTH.getAuthHeader(),
+            "Content-Type": "application/json",
           },
         })
         const responseData = await response.json()
