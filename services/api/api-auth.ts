@@ -135,7 +135,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     }
 
     const result = await response.json()
-    console.log("users/me API response:", result)
 
     const userId = result?.data?.id
 
