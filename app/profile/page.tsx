@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Navigation from "@/components/navigation"
 import UserInfo from "@/components/profile/user-info"
 import TradeLimits from "@/components/profile/trade-limits"
 import StatsTabs from "./components/stats-tabs"
@@ -49,6 +48,20 @@ export default function ProfilePage() {
   })
 
   useEffect(() => {
+    // Log user_data from localStorage when profile page loads
+    const userData = localStorage.getItem("user_data")
+    if (userData) {
+      try {
+        const parsedUserData = JSON.parse(userData)
+        console.log("user_data from localStorage:", parsedUserData)
+      } catch (error) {
+        console.log("Error parsing user_data:", error)
+        console.log("Raw user_data:", userData)
+      }
+    } else {
+      console.log("No user_data found in localStorage")
+    }
+
     const fetchUserData = async () => {
       try {
         const userId = USER.id
