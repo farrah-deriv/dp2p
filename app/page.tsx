@@ -32,7 +32,7 @@ export default function BuySellPage() {
   })
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all")
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all") // Updated default value
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
@@ -58,6 +58,7 @@ export default function BuySellPage() {
     fetchPaymentMethods()
   }, [])
 
+  // Update the fetchAdverts function to ensure adverts is always an array
   const fetchAdverts = async (query = null) => {
     setIsLoading(true)
     setError(null)
@@ -102,6 +103,7 @@ export default function BuySellPage() {
     router.push(`/advertiser/${userId}`)
   }
 
+  // Handle opening the order sidebar
   const handleOrderClick = (ad: Advertisement) => {
     setSelectedAd(ad)
     setIsOrderSidebarOpen(true)
@@ -190,6 +192,7 @@ export default function BuySellPage() {
                   const value = e.target.value
                   setSearchQuery(value)
                   if (value.trim() === "") {
+                    // If search is empty, fetch all adverts
                     fetchAdverts("")
                   } else {
                     debouncedFetchAdverts()
@@ -284,6 +287,7 @@ export default function BuySellPage() {
                     const value = e.target.value
                     setSearchQuery(value)
                     if (value.trim() === "") {
+                      // If search is empty, fetch all adverts
                       fetchAdverts("")
                     } else {
                       debouncedFetchAdverts()
