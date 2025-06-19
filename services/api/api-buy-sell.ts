@@ -1,6 +1,5 @@
 import { API, AUTH } from "@/lib/local-variables"
 
-// Define the Advertisement interface directly in this file
 export interface Advertisement {
   id: number
   user: {
@@ -28,7 +27,6 @@ export interface Advertisement {
   user_rating_average?: number
 }
 
-// Define the SearchParams interface
 export interface SearchParams {
   type?: string
   currency?: string
@@ -37,10 +35,9 @@ export interface SearchParams {
   nickname?: string
   sortBy?: string
   following?: boolean
-  favourites_only?: number // Add this parameter for filtering by favourites
+  favourites_only?: number
 }
 
-// Define the PaymentMethod interface
 export interface PaymentMethod {
   display_name: string
   type: string
@@ -90,7 +87,6 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       data = { data: [] }
     }
 
-    // Check if the response has a data property that is an array
     if (data && data.data && Array.isArray(data.data)) {
       console.log("✅ Successfully fetched advertisements")
       console.groupEnd()
@@ -110,7 +106,6 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     console.error("Error:", error)
     console.error("Stack:", error instanceof Error ? error.stack : "No stack trace available")
     console.groupEnd()
-    // Return empty array on error to prevent map errors
     return []
   }
 }
@@ -120,7 +115,6 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
  */
 export async function getAdvertiserById(id: string | number): Promise<any> {
   try {
-    // First try to get user data from the users endpoint
     const url = `${API.baseUrl}${API.endpoints.advertisers}/${id}`
     const headers = {
       ...AUTH.getAuthHeader(),
@@ -133,7 +127,6 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
       console.log("Falling back to getting advertiser data from ads...")
       console.groupEnd()
 
-      // If the user endpoint fails, try to get user data from their ads
       return await getAdvertiserFromAds(id)
     }
 
@@ -159,7 +152,6 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     console.error("Stack:", error instanceof Error ? error.stack : "No stack trace available")
     console.groupEnd()
 
-    // Return a mock profile as a fallback
     return createMockAdvertiser(id)
   }
 }
@@ -169,14 +161,11 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
  */
 async function getAdvertiserFromAds(advertiserId: string | number): Promise<any> {
   try {
-    // Get the advertiser's ads
     const ads = await getAdvertiserAds(advertiserId)
 
-    // If we have ads, extract the user info from the first ad
     if (ads && ads.length > 0 && ads[0].user) {
       const user = ads[0].user
 
-      // Return a profile object with data from the ad
       return {
         id: user.id,
         nickname: user.nickname || "Unknown",
@@ -203,7 +192,6 @@ async function getAdvertiserFromAds(advertiserId: string | number): Promise<any>
       }
     }
 
-    // If no ads or no user info, return a mock profile
     return createMockAdvertiser(advertiserId)
   } catch (error) {
     console.error("Error getting advertiser from ads:", error)
@@ -430,7 +418,6 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
       return data
     } else return []
   } catch (error) {
-    // Return empty array on error to prevent map errors
     return []
   }
 }
