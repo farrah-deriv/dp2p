@@ -1,6 +1,16 @@
 import { USER, API, AUTH } from "@/lib/local-variables"
 
 // Type definitions
+interface PaymentMethod {
+  id: number
+  method: string
+  type: string
+  display_name: string
+  fields: Record<string, any>
+  created_at?: number
+  is_default?: boolean
+}
+
 export interface APIAdvert {
   id: number
   user?: {
@@ -648,6 +658,34 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
   }
 }
 
+/**
+ * Get user payment methods
+ */
+export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.userPaymentMethods}`
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+
+    const response = await fetch(url, {
+      headers,
+      cache: "no-store",
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      return data.data || []
+    }
+
+    return []
+  } catch (error) {
+    console.error("Error fetching user payment methods:", error)
+    return []
+  }
+}
+
 // Update the MyAdsAPI namespace
 export const MyAdsAPI = {
   getUserAdverts,
@@ -657,4 +695,5 @@ export const MyAdsAPI = {
   createAd,
   updateAd,
   activateAd, // Add the new function
+  getUserPaymentMethods,
 }

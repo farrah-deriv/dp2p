@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
-import { addPaymentMethod, getUserPaymentMethods } from "../../profile/api/api-payment-methods"
+import { addPaymentMethod } from "../../profile/api/api-payment-methods"
+import { getUserPaymentMethods } from "@/services/api/api-my-ads"
 import { getCategoryDisplayName, getMethodDisplayDetails, type PaymentMethod } from "@/lib/utils"
 
 const AdPaymentMethods = () => {
