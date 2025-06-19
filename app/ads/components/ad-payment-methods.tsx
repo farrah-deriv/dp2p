@@ -1,12 +1,11 @@
 "use client"
 import { useState, useEffect } from "react"
 import { Plus } from "lucide-react"
-import { API, AUTH } from "@/lib/local-variables"
 import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
-import { addPaymentMethod } from "../../profile/api/api-payment-methods"
+import { addPaymentMethod, getUserPaymentMethods } from "../../profile/api/api-payment-methods"
 import { getCategoryDisplayName, getMethodDisplayDetails, type PaymentMethod } from "@/lib/utils"
 
 const AdPaymentMethods = () => {
@@ -18,21 +17,8 @@ const AdPaymentMethods = () => {
 
   const fetchPaymentMethods = async () => {
     try {
-      const url = `${API.baseUrl}${API.endpoints.userPaymentMethods}`
-      const headers = {
-        ...AUTH.getAuthHeader(),
-        "Content-Type": "application/json",
-      }
-
-      const response = await fetch(url, {
-        headers,
-        cache: "no-store",
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        setPaymentMethods(data.data || [])
-      }
+      const methods = await getUserPaymentMethods()
+      setPaymentMethods(methods)
     } catch (error) {
       // Silently fail - just show empty state
     } finally {
