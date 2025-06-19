@@ -7,17 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { addPaymentMethod } from "../../profile/api/api-payment-methods"
-import { getCategoryDisplayName } from "@/lib/utils"
-
-interface PaymentMethod {
-  id: number
-  method: string
-  type: string
-  display_name: string
-  fields: Record<string, any>
-  created_at?: number
-  is_default?: boolean
-}
+import { getCategoryDisplayName, getMethodDisplayDetails, type PaymentMethod } from "@/lib/utils"
 
 const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -82,27 +72,6 @@ const AdPaymentMethods = () => {
       console.error("Error adding payment method:", error)
     } finally {
       setIsAddingMethod(false)
-    }
-  }
-
-  const getMethodDisplayDetails = (method: PaymentMethod) => {
-    if (method.type === "bank") {
-      const account = method.fields.account?.value || ""
-      const bankName = method.fields.bank_name?.value || "Bank Transfer"
-      const maskedAccount = account ? account.slice(0, 6) + "****" + account.slice(-4) : "****"
-
-      return {
-        primary: maskedAccount,
-        secondary: bankName,
-      }
-    } else {
-      const account = method.fields.account?.value || ""
-      const displayValue = account || method.display_name
-
-      return {
-        primary: displayValue,
-        secondary: method.display_name,
-      }
     }
   }
 
