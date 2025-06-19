@@ -658,9 +658,6 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
   }
 }
 
-/**
- * Get user payment methods
- */
 export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const url = `${API.baseUrl}${API.endpoints.userPaymentMethods}`
