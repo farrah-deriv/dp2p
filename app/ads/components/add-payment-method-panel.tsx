@@ -15,7 +15,6 @@ interface AddPaymentMethodPanelProps {
   isLoading: boolean
 }
 
-// Define payment method types and their required fields based on the screenshots
 const PAYMENT_METHODS = [
   {
     value: "bank_transfer",
@@ -42,14 +41,12 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [charCount, setCharCount] = useState(0)
 
-  // Reset details when payment method changes
   useEffect(() => {
     setDetails({})
     setErrors({})
     setTouched({})
   }, [selectedMethod])
 
-  // Update character count for instructions
   useEffect(() => {
     setCharCount(instructions.length)
   }, [instructions])
@@ -78,7 +75,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     setDetails((prev) => ({ ...prev, [name]: value }))
     setTouched((prev) => ({ ...prev, [name]: true }))
 
-    // Clear error when user types
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev }
@@ -91,7 +87,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Mark all fields as touched
     const method = PAYMENT_METHODS.find((m) => m.value === selectedMethod)
     if (method) {
       const allTouched: Record<string, boolean> = {}
@@ -102,19 +97,15 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     }
 
     if (validateForm()) {
-      // Create a fields object with all the form field values
       const fieldValues = { ...details }
 
-      // Add instructions if present, otherwise use "-"
       fieldValues.instructions = instructions.trim() || "-"
 
-      // For bank transfer, ensure all fields are present with "-" as default for optional fields
       if (selectedMethod === "bank_transfer") {
         fieldValues.bank_code = fieldValues.bank_code || "-"
         fieldValues.branch = fieldValues.branch || "-"
       }
 
-      // Pass the method value and field values to the parent component
       onAdd(selectedMethod, fieldValues)
     }
   }
