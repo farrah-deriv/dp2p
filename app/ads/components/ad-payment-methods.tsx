@@ -1,6 +1,5 @@
 "use client"
 import { useState, useEffect } from "react"
-import { Plus } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
@@ -8,6 +7,7 @@ import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { addPaymentMethod } from "../../profile/api/api-payment-methods"
 import { getUserPaymentMethods } from "@/services/api/api-my-ads"
 import { getCategoryDisplayName, getMethodDisplayDetails, type PaymentMethod } from "@/lib/utils"
+import Image from "next/image"
 
 const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -124,7 +124,6 @@ const AdPaymentMethods = () => {
               )
             })}
 
-            {/* Add Payment Method Card */}
             <Card
               className="cursor-pointer transition-all duration-200 bg-gray-50 border-2 border-dashed border-gray-300 hover:border-gray-400 hover:bg-gray-100 flex-shrink-0 w-64 md:w-auto"
               onClick={() => setShowAddPanel(true)}
@@ -132,7 +131,7 @@ const AdPaymentMethods = () => {
               <CardContent className="p-4 flex items-center justify-center h-full min-h-[96px]">
                 <div className="text-center">
                   <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
-                    <Plus className="w-4 h-4 text-gray-600" />
+                    <Image src="/icons/icon_plus.png" alt="Add" width={16} height={16} />
                   </div>
                   <span className="text-sm font-medium text-gray-600">Add payment method</span>
                 </div>
