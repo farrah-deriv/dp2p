@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { addPaymentMethod } from "../../profile/api/api-payment-methods"
+import { getCategoryDisplayName } from "@/lib/utils"
 
 interface PaymentMethod {
   id: number
@@ -110,17 +111,6 @@ const AdPaymentMethods = () => {
       return <div className="w-3 h-3 rounded-full bg-green-500"></div>
     } else {
       return <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-    }
-  }
-
-  const getCategoryDisplayName = (type: string) => {
-    switch (type) {
-      case "bank":
-        return "Bank transfer"
-      case "ewallet":
-        return "eWallet"
-      default:
-        return "Other"
     }
   }
 
